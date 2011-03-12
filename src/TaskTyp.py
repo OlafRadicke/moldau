@@ -19,14 +19,22 @@
 
 
 
-class MainClass():
+class TaskTyp():
 
-    def Start(self):
-        print "Start..."
-        
-    def Stop(self):
-        print "...Stop"
+    ## The ID of a Task.
+    ID = ""
     
+    ## The Bash command, to do.
+    BashCommand = ""
+    
+    ## Stop before exikut task if "True"
+    StopBefore = False
+    
+    ## Stop after exikut task if "True"
+    StopAfter = False
+
+    ## A depiction of this task.
+    Depiction = ""
 
 print "läuft..."
 mc = MainClass()
