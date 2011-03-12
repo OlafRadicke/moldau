@@ -18,23 +18,26 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+## Oject-Typ for handling tasks.
+class TaskTyp:
 
-class TaskTyp():
+    ## Constructor
+    def __init__(self):
 
-    ## The ID of a Task.
-    ID = ""
+        ## The ID of a Task.
+        ID = ""
     
-    ## The Bash command, to do.
-    BashCommand = ""
+        ## The Bash command, to do.
+        BashCommand = ""
     
-    ## Stop before exikut task if "True"
-    StopBefore = False
+        ## Stop before exikut task if "True"
+        StopBefore = False
     
-    ## Stop after exikut task if "True"
-    StopAfter = False
+        ## Stop after exikut task if "True"
+        StopAfter = False
 
-    ## A depiction of this task.
-    Depiction = ""
+        ## A depiction of this task.
+        Depiction = ""
 
 print "läuft..."
 mc = MainClass()
