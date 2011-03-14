@@ -1,0 +1,141 @@
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+
+ ###########################################################################
+ #   Copyright (C) 2010 by                                                 #
+ #   Atix <info@atix.de>                                                   #
+ #                                                                         #
+ #   This program is free software; you can redistribute it and/or modify  #
+ #   it under the terms of the GNU General Public License as published by  #
+ #   the Free Software Foundation; either version 3 of the License, or     #
+ #   any later version.                                                    #
+ #                                                                         #
+ #   This program is distributed in the hope that it will be useful,       #
+ #   but WITHOUT ANY WARRANTY; without even the implied warranty of        #
+ #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
+ #   GNU General Public License for more details.                          #
+ #                                                                         #
+ #   You should have received a copy of the GNU General Public License     #
+ #   along with this program; if not, see                                  #
+ #   http:#www.gnu.org/licenses/gpl.txt                                    #
+ ###########################################################################
+
+
+import sys
+from zsettings import ZSettings
+from zdirector import ZDirector
+from optparse import OptionParser
+from GUI import MainWindow
+
+
+## @file zauberlehrling.py
+# @author Olaf Radicke<radicke@atix.de>
+
+
+progSettings = ZSettings()
+progDirector = ZDirector(progSettings)
+
+ifInitConf = False
+ifCheckPath = False
+ifGoTo = False
+GotoStap = ""
+
+## Is calling the function gotoTodo of ZDirector.
+def gotoTodo(option, opt, value, parser):
+    ifGoTo = True
+    GotoStap = value
+
+def initConf(option, opt, value,  parser):
+    print("ifInitConf = True")
+    ifInitConf = True
+
+def checkPath(option, opt,  value, parser):
+    ifCheckPath = True
+
+def setConfFile(option, opt,  value, parser):
+    progSettings.setConfFile(value)
+
+
+## parse command line options with OptionParser
+#  very important point: allway set 'type="string" in the "add_option()"'. Python
+# is not Type safety!! So is'it type not set, the programm can crash by runtime.
+def initArgPars():
+
+    parser = OptionParser()
+    parser.add_option("-g",
+                      "--goto=",
+                      action="callback",
+                      callback=gotoTodo,
+                      dest="sprungziel",
+                      type="string",
+                      help="Das Programm setzt an der genannten Stell ein.")
+                      
+    help_text = "Generiert im aktuellen Verzeichnis eine standard Konfiguration mit Namen." \
+       + progSettings.configFile + "'."
+    parser.add_option("-i",
+                      "--initconf",
+                      action="callback",
+                      callback=initConf,
+                      help=help_text)
+                      
+    help_text = "Prueft ob alle Dateipfade in der config gefunden werden koennen.'"
+    parser.add_option("-c",
+                      "--checkpath",
+                      action="callback",
+                      callback=checkPath,
+                      help=help_text)
+
+
+    help_text = "QU-GUI starten."
+    parser.add_option("-x",
+                      "--qt-gui",
+                      action="callback",
+                      callback=QtGUI,
+                      help=help_text)     
+                      
+    help_text = "Eine bestimmte Konfigurationsdatei mitgeben." 
+    parser.add_option("-f",
+                      "--conffile",
+                      action="callback",
+                      callback=setConfFile,
+                      help=help_text)
+
+
+                      
+    (options, args) = parser.parse_args()
+
+
+
+## The main function startin at first an parsing the comand-line.
+def main():
+
+    initArgPars()
+
+    if(ifInitConf):
+        print("ifInitConf: " + ifInitConf)
+        progSettings.generateNewConfigFile()
+        sys.exit(0)
+
+    elif(ifCheckPath):
+        print("ifCheckPath: " + ifCheckPath)
+        progSettings.checkPathes()
+        sys.exit(0)
+        
+    elif(ifGoTo):
+        print("ifGoTo: " + ifGoTo)
+        progDirector.gotoTodo(GotoStap)
+        sys.exit(0)
+
+    elif(ifQtGUI):
+        print("ifQtGUI: " + ifQtGUI)
+        # star GUI....
+        app = QtGui.QApplication(sys.argv)
+        w = MainWindow()
+        w.show()
+        sys.exit(app.exec_())
+        sys.exit(0)
+    else:
+        progDirector.start()
+        sys.exit(0)
+
+main()

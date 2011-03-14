@@ -1,0 +1,5 @@
+# Broadcom Corporation NetXtreme II BCM5708 Gigabit Ethernet 
+DEVICE=eth0 
+BOOTPROTO=none 
+ONBOOT=no 
+

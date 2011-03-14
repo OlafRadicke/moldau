@@ -1,0 +1,7 @@
+/dev/vg_local/lv_swap swap      swap  defaults        0 0 
+/dev/vg_local/lv_tmp  /var/tmp  ext3  defaults        1 2 
+tmpfs                 /dev/shm  tmpfs defaults        0 0 
+devpts                /dev/pts  devpts gid=5,mode=620 0 0 
+sysfs                 /sys      sysfs defaults        0 0 
+proc                  /proc     proc  defaults        0 0 
+/.cdsl.local/var/run  /var/run  auto  bind            0 0

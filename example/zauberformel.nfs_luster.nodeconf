@@ -1,0 +1,17 @@
+
+[wget]
+stap_typ = bash_command
+description = write a comment.
+commant = cd /usr/share/rhn/; wget http://rhn.atix.de/pub//atix.de.ca.crt
+
+[set_host]
+old_file = /etc/hosts
+stap_typ = replacement
+new_file = ./var/hosts
+description = Konfigure /hosts.
+
+
+
+
+[storyboard]
+staps = wget

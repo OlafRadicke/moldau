@@ -11,14 +11,14 @@ import sys
 from PyQt4 import QtGui, QtCore
 
 
-#################################################################### 
+## Main funktion
 def main(): 
     app = QtGui.QApplication(sys.argv)
     w = MainWindow()
     w.show() 
     sys.exit(app.exec_())
 
-##################################################################
+## The main window of the GUI
 class MainWindow(QtGui.QMainWindow):
 
     ## pseudo data
@@ -38,8 +38,6 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(exit, QtCore.SIGNAL('triggered()'), QtCore.SLOT('close()'))
 
 
-
-        
         menubar = self.menuBar()
         file = menubar.addMenu('&File')
         file.addAction(exit)
@@ -77,7 +75,7 @@ class MainWindow(QtGui.QMainWindow):
         self.statusBar().showMessage('Ready')
 
 
-#################################################################### 
+## Helper class 
 class MyListModel(QtCore.QAbstractListModel):
     def __init__(self, datain, parent=None, *args): 
         """ datain: a list where each item is a row
@@ -94,7 +92,7 @@ class MyListModel(QtCore.QAbstractListModel):
         else: 
             return QtCore.QVariant()
 
-####################################################################
+
 
 
 main()
