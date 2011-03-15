@@ -37,16 +37,14 @@ moldauConf   = MoldauConf()
 progSettings = ZSettings()
 progDirector = ZDirector(progSettings)
 
-#ifCheckPath = False
-#ifGoTo = False
-#ifQtGUI = False
-GotoStap = ""
+
+##############  callbacks #######################
 
 ## Is calling the function gotoTodo of ZDirector.
 def gotoTodo(option, opt, value, parser):
     #ifGoTo = True
     GotoStap = value
-    print("ifGoTo: " + ifGoTo)
+    print("ifGoTo... ")
     progDirector.gotoTodo(GotoStap)
     sys.exit(0)
 
@@ -56,7 +54,7 @@ def initConf(option, opt, value,  parser):
 
 def checkPath(option, opt,  value, parser):
     #ifCheckPath = True
-    print("ifCheckPath: " + ifCheckPath)
+    print("ifCheckPath...")
     progSettings.checkPathes()
     sys.exit(0)
 
@@ -128,25 +126,6 @@ def main():
 
     initArgPars()
 
-    #elif(ifCheckPath):
-        #print("ifCheckPath: " + ifCheckPath)
-        #progSettings.checkPathes()
-        #sys.exit(0)
-        
-    #elif(ifGoTo):
-        #print("ifGoTo: " + ifGoTo)
-        #progDirector.gotoTodo(GotoStap)
-        #sys.exit(0)
-
-    #elif(ifQtGUI):
-        #print("ifQtGUI: " + ifQtGUI)
-        ## star GUI....
-        #app = QtGui.QApplication(sys.argv)
-        #w = MainWindow()
-        #w.show()
-        #sys.exit(app.exec_())
-        #sys.exit(0)
-    #else:
     progDirector.start()
     sys.exit(0)
 
