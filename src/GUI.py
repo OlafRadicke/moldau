@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 # Sempel Source: http://www.saltycrane.com/blog/2008/01/pyqt-43-simple-qabstractlistmodel/
 # http://zetcode.com/tutorials/pyqt4/german/menusandtoolbars/
@@ -93,6 +94,3 @@ class MyListModel(QtCore.QAbstractListModel):
             return QtCore.QVariant()
 
 
-
-
-main()

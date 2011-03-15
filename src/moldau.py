@@ -22,40 +22,56 @@
 
 
 import sys
+from MoldauConf import MoldauConf
 from zsettings import ZSettings
 from zdirector import ZDirector
 from optparse import OptionParser
 from GUI import MainWindow
+from PyQt4 import QtGui, QtCore
 
 
 ## @file zauberlehrling.py
 # @author Olaf Radicke<radicke@atix.de>
 
-
+moldauConf   = MoldauConf()
 progSettings = ZSettings()
 progDirector = ZDirector(progSettings)
 
-ifInitConf = False
-ifCheckPath = False
-ifGoTo = False
-ifQtGUI = False
+#ifCheckPath = False
+#ifGoTo = False
+#ifQtGUI = False
 GotoStap = ""
 
 ## Is calling the function gotoTodo of ZDirector.
 def gotoTodo(option, opt, value, parser):
-    ifGoTo = True
+    #ifGoTo = True
     GotoStap = value
+    print("ifGoTo: " + ifGoTo)
+    progDirector.gotoTodo(GotoStap)
+    sys.exit(0)
 
 def initConf(option, opt, value,  parser):
-    print("ifInitConf = True")
-    ifInitConf = True
+    progSettings.generateNewConfigFile()
+    sys.exit(0)
 
 def checkPath(option, opt,  value, parser):
-    ifCheckPath = True
+    #ifCheckPath = True
+    print("ifCheckPath: " + ifCheckPath)
+    progSettings.checkPathes()
+    sys.exit(0)
 
 def setConfFile(option, opt,  value, parser):
     progSettings.setConfFile(value)
 
+def goQtGUI(option, opt,  value, parser):
+    #ifQtGUI = True
+    print("ifQtGUI... ")
+    # star GUI....
+    app = QtGui.QApplication(sys.argv)
+    w = MainWindow()
+    w.show()
+    sys.exit(app.exec_())
+    sys.exit(0)
 
 ## parse command line options with OptionParser
 #  very important point: allway set 'type="string" in the "add_option()"'. Python
@@ -91,7 +107,7 @@ def initArgPars():
     parser.add_option("-x",
                       "--qt-gui",
                       action="callback",
-                      callback=QtGUI,
+                      callback=goQtGUI,
                       help=help_text)     
                       
     help_text = "Eine bestimmte Konfigurationsdatei mitgeben." 
@@ -112,31 +128,26 @@ def main():
 
     initArgPars()
 
-    if(ifInitConf):
-        print("ifInitConf: " + ifInitConf)
-        progSettings.generateNewConfigFile()
-        sys.exit(0)
-
-    elif(ifCheckPath):
-        print("ifCheckPath: " + ifCheckPath)
-        progSettings.checkPathes()
-        sys.exit(0)
+    #elif(ifCheckPath):
+        #print("ifCheckPath: " + ifCheckPath)
+        #progSettings.checkPathes()
+        #sys.exit(0)
         
-    elif(ifGoTo):
-        print("ifGoTo: " + ifGoTo)
-        progDirector.gotoTodo(GotoStap)
-        sys.exit(0)
+    #elif(ifGoTo):
+        #print("ifGoTo: " + ifGoTo)
+        #progDirector.gotoTodo(GotoStap)
+        #sys.exit(0)
 
-    elif(ifQtGUI):
-        print("ifQtGUI: " + ifQtGUI)
-        # star GUI....
-        app = QtGui.QApplication(sys.argv)
-        w = MainWindow()
-        w.show()
-        sys.exit(app.exec_())
-        sys.exit(0)
-    else:
-        progDirector.start()
-        sys.exit(0)
+    #elif(ifQtGUI):
+        #print("ifQtGUI: " + ifQtGUI)
+        ## star GUI....
+        #app = QtGui.QApplication(sys.argv)
+        #w = MainWindow()
+        #w.show()
+        #sys.exit(app.exec_())
+        #sys.exit(0)
+    #else:
+    progDirector.start()
+    sys.exit(0)
 
 main()

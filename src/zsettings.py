@@ -59,6 +59,7 @@ class ZSettings:
         self.config.write(sys.stdout)
         output = open(self.configFile,'w')
         self.config.write(output)
+        print "schreibe in: ", self.configFile
 
     ## print the config file content. For controling and debuggings.
     def print_all_confs(self):
