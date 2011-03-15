@@ -38,6 +38,7 @@ progDirector = ZDirector(progSettings)
 ifInitConf = False
 ifCheckPath = False
 ifGoTo = False
+ifQtGUI = False
 GotoStap = ""
 
 ## Is calling the function gotoTodo of ZDirector.

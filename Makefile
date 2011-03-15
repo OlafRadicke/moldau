@@ -5,6 +5,8 @@ DOXYDIR      = docs/doxygen
 
 OUTPUT_DIST  = dist/
 OUTPUT_BUILD = build/
+PREFIX       = /usr/local
+BINDIR       = /usr/local/bin
 
 ############  Rules  ############
 
@@ -29,7 +31,9 @@ dist:
 
 
 install:
-	echo "sorry, does not implement!"
+	cp -r ./$(OUTPUT_BUILD)/* $(PREFIX)/moldau/
+	ln -s $(PREFIX)/moldau/zauberleherling.py $(BINDIR)/moldau
+	cp ./example/
 
 
 uninstall:
