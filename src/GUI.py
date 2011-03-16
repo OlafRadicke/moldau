@@ -6,10 +6,9 @@
 # http://stackoverflow.com/questions/1100775/create-pyqt-menu-from-a-list-of-strings
 
 import sys
-#from PyQt4.QtCore import * 
-#from PyQt4.QtGui import * 
-#from PyQt4 import QtGui
+
 from PyQt4 import QtGui, QtCore
+from PyQt4.QtCore import pyqtSlot
 
 
 ## Main funktion
@@ -32,16 +31,25 @@ class MainWindow(QtGui.QMainWindow):
         # pseudo data
         lm = MyListModel(self.list_data, self)
 
-        ## menubar
+        #---------- menubar --------------------
+        ## Menue-item for apliction exit
         exit = QtGui.QAction(QtGui.QIcon('icons/exit.png'), 'Exit', self)
         exit.setShortcut('Ctrl+Q')
         exit.setStatusTip('Exit application')
         self.connect(exit, QtCore.SIGNAL('triggered()'), QtCore.SLOT('close()'))
 
 
+        ## Menue-item for change the task stetting file.
+        selctTasksSetting = QtGui.QAction( 'Open task seting', self)
+        selctTasksSetting.setShortcut('Ctrl+T')
+        selctTasksSetting.setStatusTip('Open task seting')
+        self.connect(selctTasksSetting, QtCore.SIGNAL('triggered()'), QtCore.SLOT('selctTasksSettingDialog()'))
+
+
         menubar = self.menuBar()
         file = menubar.addMenu('&File')
         file.addAction(exit)
+        file.addAction(selctTasksSetting)
 
 
 
@@ -74,6 +82,12 @@ class MainWindow(QtGui.QMainWindow):
 
         # Statusbar
         self.statusBar().showMessage('Ready')
+
+    ## A function with qt-slot    
+    @pyqtSlot()
+    def selctTasksSettingDialog(self):
+
+        print "selctTasksSettingDialog"
 
 
 ## Helper class 
