@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 
  ###########################################################################
- #   Copyright (C) 2010 by                                                 #
- #   Atix <info@atix.de>                                                   #
+ #   Copyright (C) 2010 by ATIX AG                                         #
  #                                                                         #
  #   This program is free software; you can redistribute it and/or modify  #
  #   it under the terms of the GNU General Public License as published by  #
@@ -18,6 +17,8 @@
  #   You should have received a copy of the GNU General Public License     #
  #   along with this program; if not, see                                  #
  #   http:#www.gnu.org/licenses/gpl.txt                                    #
+ #                                                                         #
+ #   Olaf Radicke <radicke@atix.de>                                        #
  ###########################################################################
 
 
@@ -27,7 +28,7 @@ from MoldauConf import MoldauConf
 from TasksSettings import TasksSettings
 from zdirector import ZDirector
 from optparse import OptionParser
-from GUI import startGUI
+
 
 
 ## @file zauberlehrling.py
@@ -79,10 +80,10 @@ class Moldau:
 
     ## Callback: Starting the GUI-Interface
     def goQtGUI(self, option, opt,  value, parser):
-        #ifQtGUI = True
+        import GUI
         print("ifQtGUI... ")
         # star GUI....
-        startGUI()
+        GUI.startGUI()
         sys.exit(0)
 
     ## parse command line options with OptionParser

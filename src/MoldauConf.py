@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 
  ###########################################################################
- #   Copyright (C) 2010 by                                                 #
- #   Atix <info@atix.de>                                                   #
+ #   Copyright (C) 2010 by ATIX AG                                         #
  #                                                                         #
  #   This program is free software; you can redistribute it and/or modify  #
  #   it under the terms of the GNU General Public License as published by  #
@@ -18,6 +17,8 @@
  #   You should have received a copy of the GNU General Public License     #
  #   along with this program; if not, see                                  #
  #   http:#www.gnu.org/licenses/gpl.txt                                    #
+ #                                                                         #
+ #   Olaf Radicke <radicke@atix.de>                                        #
  ###########################################################################
 
 import ConfigParser
@@ -86,5 +87,8 @@ class MoldauConf:
         return conf_value
 
 
+# =============== set-functions =====================
 
 
+    def setTasksSettingsFile(self, filename):
+        self.config.set("main", "tasks_settings_file", filename)

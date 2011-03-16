@@ -1,81 +1,100 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Sempel Source: http://www.saltycrane.com/blog/2008/01/pyqt-43-simple-qabstractlistmodel/
-# http://zetcode.com/tutorials/pyqt4/german/menusandtoolbars/
-# http://stackoverflow.com/questions/1100775/create-pyqt-menu-from-a-list-of-strings
+
+ ###########################################################################
+ #   Copyright (C) 2010 by ATIX AG                                         #
+ #                                                                         #
+ #   This program is free software; you can redistribute it and/or modify  #
+ #   it under the terms of the GNU General Public License as published by  #
+ #   the Free Software Foundation; either version 3 of the License, or     #
+ #   any later version.                                                    #
+ #                                                                         #
+ #   This program is distributed in the hope that it will be useful,       #
+ #   but WITHOUT ANY WARRANTY; without even the implied warranty of        #
+ #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
+ #   GNU General Public License for more details.                          #
+ #                                                                         #
+ #   You should have received a copy of the GNU General Public License     #
+ #   along with this program; if not, see                                  #
+ #   http:#www.gnu.org/licenses/gpl.txt                                    #
+ #                                                                         #
+ #   Olaf Radicke <radicke@atix.de>                                        #
+ ###########################################################################
 
 import sys
 
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import pyqtSlot
+from MoldauConf import MoldauConf
+from TasksSettings import TasksSettings
 
 
-## Main funktion
-def main(): 
-    app = QtGui.QApplication(sys.argv)
-    w = MainWindow()
-    w.show() 
-    sys.exit(app.exec_())
+
 
 ## The main window of the GUI
 class MainWindow(QtGui.QMainWindow):
 
     ## pseudo data
     list_data  = [1,2,3,4]
+    ## configuraton of this applikation.
+    moldauConf   = MoldauConf()
+    ## The setings  of taskts.
+    tasksSettings = TasksSettings(moldauConf.getTasksSettingsFile())
 
     ## Constructor
     def __init__(self, *args): 
         QtGui.QWidget.__init__(self, *args) 
+
 
         # pseudo data
         lm = MyListModel(self.list_data, self)
 
         #---------- menubar --------------------
         ## Menue-item for apliction exit
-        exit = QtGui.QAction(QtGui.QIcon('icons/exit.png'), 'Exit', self)
-        exit.setShortcut('Ctrl+Q')
-        exit.setStatusTip('Exit application')
-        self.connect(exit, QtCore.SIGNAL('triggered()'), QtCore.SLOT('close()'))
+        menuExit = QtGui.QAction(QtGui.QIcon('icons/exit.png'), 'Exit', self)
+        menuExit.setShortcut('Ctrl+Q')
+        menuExit.setStatusTip('Exit application')
+        self.connect(menuExit, QtCore.SIGNAL('triggered()'), QtCore.SLOT('close()'))
 
 
         ## Menue-item for change the task stetting file.
-        selctTasksSetting = QtGui.QAction( 'Open task seting', self)
-        selctTasksSetting.setShortcut('Ctrl+T')
-        selctTasksSetting.setStatusTip('Open task seting')
-        self.connect(selctTasksSetting, QtCore.SIGNAL('triggered()'), QtCore.SLOT('selctTasksSettingDialog()'))
+        menuTasksSetting = QtGui.QAction( 'Open task seting', self)
+        menuTasksSetting.setShortcut('Ctrl+T')
+        menuTasksSetting.setStatusTip('Open task seting')
+        self.connect(menuTasksSetting, QtCore.SIGNAL('triggered()'), QtCore.SLOT('selctTasksSettingDialog()'))
 
 
         menubar = self.menuBar()
-        file = menubar.addMenu('&File')
-        file.addAction(exit)
-        file.addAction(selctTasksSetting)
+        menuFile = menubar.addMenu('&File')
+        menuFile.addAction(menuExit)
+        menuFile.addAction(menuTasksSetting)
 
 
 
-        # Main Widget
+        ## Main Widget
         centralWidget = QtGui.QWidget()
         self.setCentralWidget(centralWidget)
 
-        # Main layout
+        ## Main layout
         hMainLayout = QtGui.QHBoxLayout()
         centralWidget.setLayout(hMainLayout)
 
-	# VBox left
+        ## VBox left
         vListLayoutL = QtGui.QVBoxLayout()
         hMainLayout.addLayout(vListLayoutL)
 
-        # create table
+        ## create table
         listview = QtGui.QListView()
         listview.setModel(lm)
         vListLayoutL.addWidget(listview)
 
 
-	# VBox Right
+        ## VBox Right
         vListLayoutR = QtGui.QVBoxLayout()
         hMainLayout.addLayout(vListLayoutR)
 
-        # create Rigth table
+        ## create Rigth table
         listviewR = QtGui.QListView()
         listviewR.setModel(lm)
         vListLayoutR.addWidget(listviewR)
@@ -83,11 +102,13 @@ class MainWindow(QtGui.QMainWindow):
         # Statusbar
         self.statusBar().showMessage('Ready')
 
-    ## A function with qt-slot    
+    ## A function with qt-slot. it's open a File-Dialog. for
+    # change sie Tasks-Setting-Configuration
     @pyqtSlot()
     def selctTasksSettingDialog(self):
 
         print "selctTasksSettingDialog"
+        filename=QFileDialog.getOpenFileName(self, "Change tasks-Setting-Configuration", moldauConf.getTasksSettingsFile(),"*.*")
 
 
 ## Helper class 
@@ -113,3 +134,4 @@ def startGUI():
     w = MainWindow()
     w.show()
     sys.exit(app.exec_())
+
