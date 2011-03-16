@@ -28,7 +28,7 @@ import os.path
 # @author Olaf Radicke<radicke@atix.de>
 
 ## Class for aplication settings
-class ZSettings:
+class TasksSettings:
 
     ## constructor set name of config-file; init the ConfigParser instanc
     # and load/read the config-file
