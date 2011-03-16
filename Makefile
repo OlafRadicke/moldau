@@ -33,7 +33,7 @@ dist:
 install:
 	cp -r ./$(OUTPUT_BUILD)/* $(PREFIX)/moldau/
 	ln -s $(PREFIX)/moldau/moldau.py $(BINDIR)/moldau
-	cp ./example/
+	cp ./example/ $(PREFIX)/moldau/
 
 
 uninstall:

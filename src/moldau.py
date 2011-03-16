@@ -26,8 +26,7 @@ from MoldauConf import MoldauConf
 from zsettings import ZSettings
 from zdirector import ZDirector
 from optparse import OptionParser
-from GUI import MainWindow
-from PyQt4 import QtGui, QtCore
+from GUI import startGUI
 
 
 ## @file zauberlehrling.py
@@ -65,10 +64,7 @@ def goQtGUI(option, opt,  value, parser):
     #ifQtGUI = True
     print("ifQtGUI... ")
     # star GUI....
-    app = QtGui.QApplication(sys.argv)
-    w = MainWindow()
-    w.show()
-    sys.exit(app.exec_())
+    startGUI()
     sys.exit(0)
 
 ## parse command line options with OptionParser
