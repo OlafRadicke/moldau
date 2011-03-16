@@ -108,7 +108,7 @@ class MainWindow(QtGui.QMainWindow):
     def selctTasksSettingDialog(self):
 
         print "selctTasksSettingDialog"
-        filename=QFileDialog.getOpenFileName(self, "Change tasks-Setting-Configuration", moldauConf.getTasksSettingsFile(),"*.*")
+        filename=QtGui.QFileDialog.getOpenFileName(self, "Change tasks-Setting-Configuration", self.moldauConf.getTasksSettingsFile(),"*.*")
 
 
 ## Helper class 
