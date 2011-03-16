@@ -92,3 +92,5 @@ class MoldauConf:
 
     def setTasksSettingsFile(self, filename):
         self.config.set("main", "tasks_settings_file", filename)
+
+        
