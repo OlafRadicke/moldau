@@ -91,23 +91,31 @@ class MoldauMainWindow(QtGui.QMainWindow):
         vListLayoutL = QtGui.QVBoxLayout()
         hMainLayout.addLayout(vListLayoutL)
 
-        ## create left list
-        listview = QtGui.QTreeWidget()
-        ## Header
+        # -------------- Tree ----------------
+        ### create left list
+        #listview = QtGui.QTreeWidget()
+        
+        ### Header
+        #listview.setHeaderLabel("Task")
+        #vListLayoutL.addWidget(listview)
 
-#        listview.setHeaderLabel(" --- Task --- ")
-        listview.setHeaderLabel("Task")
-#        listview.setColumnWidth(0, 100)
-        listview.setContentsMargins(1,1,1,1)
+
+        ### Item-List
+        #for item in self.tasksSettings.getStoryboard():
+          #print item
+          #listview.addTopLevelItem(QtGui.QTreeWidgetItem(item))
+          #listview.addTopLevelItem(QtGui.QTreeWidgetItem("TEST-01"))
+
+        # -------------- List --------------
+
+        listview = QListWidget()
         vListLayoutL.addWidget(listview)
-
-
         ## Item-List
         for item in self.tasksSettings.getStoryboard():
           print item
-          listview.addTopLevelItem(QtGui.QTreeWidgetItem(item))
-          listview.addTopLevelItem(QtGui.QTreeWidgetItem("TEST-01"))
-
+          listview.insertItem(0, item)
+          listview.insertItem(0, "ende")
+        
 
         ## VBox Right
         vListLayoutR = QtGui.QVBoxLayout()
