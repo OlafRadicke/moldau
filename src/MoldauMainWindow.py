@@ -82,14 +82,26 @@ class MoldauMainWindow(QtGui.QMainWindow):
         vMainLayout.addLayout(hMainLayout)
 
         # --------- Bottom text View -----------------------------
+
+        # VBox left with GrouBox-frame
+        resultBox = QtGui.QGroupBox("Comand result:")
+        bottomLayout = QtGui.QHBoxLayout()
+        resultBox.setLayout(bottomLayout)
+        vMainLayout.addWidget(resultBox)
+
+        
         # Bottom text view
         textView = QtGui.QTextBrowser()
-        vMainLayout.addWidget(textView)
+        bottomLayout.addWidget(textView)
 
         # ----------- Left box ---------------------------------
-        ## VBox left
+
+        # VBox left with GrouBox-frame
+        taskBox = QtGui.QGroupBox("Stap list")
         vListLayoutL = QtGui.QVBoxLayout()
-        hMainLayout.addLayout(vListLayoutL)
+        taskBox.setLayout(vListLayoutL)
+        hMainLayout.addWidget(taskBox)
+        
 
         # -------------- Tree ----------------
         ### create left list
@@ -108,21 +120,30 @@ class MoldauMainWindow(QtGui.QMainWindow):
 
         # -------------- List --------------
 
-        listview = QListWidget()
+        # Label
+        #stepListTypLabel = QtGui.QLabel("Step:")
+        #vListLayoutL.addWidget(stepListTypLabel)
+
+        # Siple List
+        listview = QtGui.QListWidget()
         vListLayoutL.addWidget(listview)
         ## Item-List
+        count = 0
         for item in self.tasksSettings.getStoryboard():
           print item
-          listview.insertItem(0, item)
-          listview.insertItem(0, "ende")
+          listview.insertItem(count, item)
+          count = count + 1
+        listview.insertItem(count, "ende")
         
 
-        ## VBox Right
+        # VBox Right with GrouBox-frame
+        taskBox = QtGui.QGroupBox("Stap details")
         vListLayoutR = QtGui.QVBoxLayout()
-        hMainLayout.addLayout(vListLayoutR)
-
+        taskBox.setLayout(vListLayoutR)
+        hMainLayout.addWidget(taskBox)
 
         # ----------- Rigth Box -------------------
+
 
         # Task name
         hLayoutName = QtGui.QHBoxLayout()
@@ -143,12 +164,11 @@ class MoldauMainWindow(QtGui.QMainWindow):
         hLayoutDescription.addWidget(descriptionLineEdit)
 
         ## VBox Right2
-        groupBox = QtGui.QGroupBox("Todo")
+        toDoGroupBox = QtGui.QGroupBox("Todo")
         vListLayoutR2 = QtGui.QVBoxLayout()
-        groupBox.setLayout(vListLayoutR2)
-        vListLayoutR.addWidget(groupBox)
-#        vListLayoutR.addLayout(vListLayoutR2)
-#        vListLayoutR.addWidget(groupBox)  
+        toDoGroupBox.setLayout(vListLayoutR2)
+        vListLayoutR.addWidget(toDoGroupBox)
+
 
         # Task stap typ
         hLayoutStepTyp = QtGui.QHBoxLayout()
