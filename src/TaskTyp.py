@@ -1,5 +1,6 @@
 #! /usr/bin/env python
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
+
 
 ##
 #    Copyright (C) 2011  Olaf Radicke
@@ -30,16 +31,16 @@ class TaskTyp:
         ## The Bash command, to do.
         BashCommand = ""
     
-        ## Stop before exikut task if "True"
+        ## Stop before execute task if "True"
         StopBefore = False
     
-        ## Stop after exikut task if "True"
+        ## Stop after execute task if "True"
         StopAfter = False
 
         ## A depiction of this task.
         Depiction = ""
 
-print "l‰uft..."
+print "l√§uft..."
 mc = MainClass()
 mc.Start()
 mc.Stop()

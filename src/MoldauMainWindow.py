@@ -45,6 +45,7 @@ class MoldauMainWindow(QtGui.QMainWindow):
     def __init__(self, *args): 
         QtGui.QWidget.__init__(self, *args) 
 
+        self.setMinimumSize(800,680)
 
         #---------- menubar --------------------
         ## Menue-item for apliction exit
@@ -72,36 +73,120 @@ class MoldauMainWindow(QtGui.QMainWindow):
         centralWidget = QtGui.QWidget()
         self.setCentralWidget(centralWidget)
 
-        ## Main layout
+        ## Main layout V
+        vMainLayout = QtGui.QVBoxLayout()
+        centralWidget.setLayout(vMainLayout)
+        
+        ## Main layout H
         hMainLayout = QtGui.QHBoxLayout()
-        centralWidget.setLayout(hMainLayout)
+        vMainLayout.addLayout(hMainLayout)
 
+        # --------- Bottom text View -----------------------------
+        # Bottom text view
+        textView = QtGui.QTextBrowser()
+        vMainLayout.addWidget(textView)
+
+        # ----------- Left box ---------------------------------
         ## VBox left
         vListLayoutL = QtGui.QVBoxLayout()
         hMainLayout.addLayout(vListLayoutL)
 
         ## create left list
-        listview = QtGui.QListView()
-        itemModelL = QtGui.QStandardItemModel()
-        itemModelL.appendRow(QtGui.QStandardItem("TEST-1"))
-        itemModelL.appendRow(QtGui.QStandardItem("TEST-2"))
-        listview.setModel(itemModelL)
+        listview = QtGui.QTreeWidget()
+        ## Header
+
+#        listview.setHeaderLabel(" --- Task --- ")
+        listview.setHeaderLabel("Task")
+#        listview.setColumnWidth(0, 100)
+        listview.setContentsMargins(1,1,1,1)
         vListLayoutL.addWidget(listview)
+
+
+        ## Item-List
+        for item in self.tasksSettings.getStoryboard():
+          print item
+          listview.addTopLevelItem(QtGui.QTreeWidgetItem(item))
+          listview.addTopLevelItem(QtGui.QTreeWidgetItem("TEST-01"))
 
 
         ## VBox Right
         vListLayoutR = QtGui.QVBoxLayout()
         hMainLayout.addLayout(vListLayoutR)
 
-        ## create Rigth table
-        listviewR = QtGui.QListView()
-        itemModel = QtGui.QStandardItemModel()
-        itemModel.appendRow(QtGui.QStandardItem("TEST"))
-        listviewR.setModel(itemModel)
-        vListLayoutR.addWidget(listviewR)
+        # ----------- Rigth Box -------------------
 
+        # Task name
+        hLayoutName = QtGui.QHBoxLayout()
+        vListLayoutR.addLayout(hLayoutName)
+        nameLabel = QtGui.QLabel("Name:")
+        hLayoutName.addWidget(nameLabel)
+        nameLineEdit = QtGui.QLineEdit()
+        hLayoutName.addWidget(nameLineEdit)
+
+
+
+        # Task Description
+        hLayoutDescription = QtGui.QHBoxLayout()
+        vListLayoutR.addLayout(hLayoutDescription)
+        descriptionLabel = QtGui.QLabel("Description:")
+        hLayoutDescription.addWidget(descriptionLabel)
+        descriptionLineEdit = QtGui.QLineEdit()
+        hLayoutDescription.addWidget(descriptionLineEdit)
+
+        # Task stap typ
+        hLayoutStepTyp = QtGui.QHBoxLayout()
+        vListLayoutR.addLayout(hLayoutStepTyp)
+        stepTypLabel = QtGui.QLabel("Step Typ:")
+        hLayoutStepTyp.addWidget(stepTypLabel)
+        stepTypComboBox = QtGui.QComboBox()
+        stepTypComboBox.addItem("replacement")
+        stepTypComboBox.addItem("bash_command")
+        hLayoutStepTyp.addWidget(stepTypComboBox)
+
+
+        # Task Bash Command
+        hLayoutBashCommand = QtGui.QHBoxLayout()
+        vListLayoutR.addLayout(hLayoutBashCommand)
+        bashCommandLabel = QtGui.QLabel("Bash Command:")
+        hLayoutBashCommand.addWidget(bashCommandLabel)
+        bashCommandLineEdit = QtGui.QLineEdit()
+        hLayoutBashCommand.addWidget(bashCommandLineEdit)
+
+
+        # original file
+        hLayoutOriginalFile = QtGui.QHBoxLayout()
+        vListLayoutR.addLayout(hLayoutOriginalFile)
+        originalFileLabel = QtGui.QLabel("Original File:")
+        hLayoutOriginalFile.addWidget(originalFileLabel)
+        originalFileLineEdit = QtGui.QLineEdit()
+        hLayoutOriginalFile.addWidget(originalFileLineEdit)
+        originalFilePushButton = QtGui.QPushButton("...")
+        hLayoutOriginalFile.addWidget(originalFilePushButton)
+
+        # file for replacement
+        hLayoutReplacementFile = QtGui.QHBoxLayout()
+        vListLayoutR.addLayout(hLayoutReplacementFile)
+        replacementFileLabel = QtGui.QLabel("File for Replacement:")
+        hLayoutReplacementFile.addWidget(replacementFileLabel)
+        replacementFileLineEdit = QtGui.QLineEdit()
+        hLayoutReplacementFile.addWidget(replacementFileLineEdit)
+        replacementFilePushButton = QtGui.QPushButton("...")
+        hLayoutReplacementFile.addWidget(replacementFilePushButton)
+        
+
+        # Stop before execute task
+        beforeCheckBox = QtGui.QCheckBox("Stop before execute task")
+        vListLayoutR.addWidget(beforeCheckBox)
+
+
+        ## Stop after execute task if "True"
+        afterCheckBox = QtGui.QCheckBox("Stop after execute task")
+        vListLayoutR.addWidget(afterCheckBox)
+        
         # Statusbar
         self.statusBar().showMessage('Ready')
+
+
 
     ## A function with qt-slot. it's open a File-Dialog. for
     # change sie Tasks-Setting-Configuration
