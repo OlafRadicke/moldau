@@ -41,6 +41,9 @@ class TaskView(QtGui.QGroupBox):
     ## The setings  of taskts.
     tasksSettings = TasksSettings(moldauConf.getTasksSettingsFile())
 
+    ## QtGui.QLineEdit: Text fild for name of Task
+    nameLineEdit = ""
+
     ## Constructor
     def __init__(self):
         QtGui.QGroupBox.__init__(self)
@@ -59,8 +62,8 @@ class TaskView(QtGui.QGroupBox):
         vListLayoutR.addLayout(hLayoutName)
         nameLabel = QtGui.QLabel("Name:")
         hLayoutName.addWidget(nameLabel)
-        nameLineEdit = QtGui.QLineEdit()
-        hLayoutName.addWidget(nameLineEdit)
+        self.nameLineEdit = QtGui.QLineEdit()
+        hLayoutName.addWidget(self.nameLineEdit)
 
 
 
@@ -125,11 +128,13 @@ class TaskView(QtGui.QGroupBox):
         beforeCheckBox = QtGui.QCheckBox("Stop before execute task")
         vListLayoutR.addWidget(beforeCheckBox)
 
-
         ## Stop after execute task if "True"
         afterCheckBox = QtGui.QCheckBox("Stop after execute task")
         vListLayoutR.addWidget(afterCheckBox)
-        
+
+        ## Skip this task if set "True"
+        skipCheckBox = QtGui.QCheckBox("Skip this task")
+        vListLayoutR.addWidget(skipCheckBox)
 
 
 

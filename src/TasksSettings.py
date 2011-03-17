@@ -44,18 +44,28 @@ class TasksSettings:
         self.config.add_section("storyboard")
         self.config.set("storyboard", "staps", "stap_010;stap_020")
 
-
+        # A example for a task with a replacement.
         self.config.add_section("stap_010")
         self.config.set("stap_010", "stap_typ", "replacement")
+        self.config.set("stap_020", "commant", "")
         self.config.set("stap_010", "old_file", "~/var/oldfile.txt")
         self.config.set("stap_010", "new_file", "~/var/newfile.txt")
         self.config.set("stap_010", "description", "write a comment.")
+        self.config.set("stap_020", "stop_before_do", "False")
+        self.config.set("stap_020", "stop_after_do", "True")
+        self.config.set("stap_020", "skip_stap", "False")
 
 
+        # A example for a task with a bash command.
         self.config.add_section("stap_020")
         self.config.set("stap_020", "stap_typ", "bash_command")
         self.config.set("stap_020", "commant", "ls -lah")
+        self.config.set("stap_010", "old_file", "")
+        self.config.set("stap_010", "new_file", "")
         self.config.set("stap_020", "description", "write a comment.")
+        self.config.set("stap_020", "stop_before_do", "False")
+        self.config.set("stap_020", "stop_after_do", "True")
+        self.config.set("stap_020", "skip_stap", "False")
 
         self.config.write(sys.stdout)
         output = open(self.configFile,'w')
@@ -142,4 +152,27 @@ class TasksSettings:
         return conf_value
 
 
+    ##
+    # @param todo  the todo from the config-file which is meaning.
+    # @return return "True" if stop by stap before do the task.
+    # Else return "False".
+    def isStopBeforeDo(self, todo):
+        conf_value  = self.config.get(todo, "stop_before_do")
+        return conf_value
 
+    ##
+    # @param todo  the todo from the config-file which is meaning.
+    # @return return "True" if stop by stap after do the task.
+    # Else return "False".
+    def isStopAfterDo(self, todo):
+        conf_value  = self.config.get(todo, "stop_after_do")
+        return conf_value
+        
+    ##
+    # @param todo  the todo from the config-file which is meaning.
+    # @return return "True" if skip this stap.
+    # Else return "False".
+    def isSkipStap(self, todo):
+        conf_value  = self.config.get(todo, "skip_stap")
+        return conf_value
+    

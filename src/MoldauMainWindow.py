@@ -41,6 +41,12 @@ class MoldauMainWindow(QtGui.QMainWindow):
     ## The setings  of taskts.
     tasksSettings = TasksSettings(moldauConf.getTasksSettingsFile())
 
+    ## Simple List
+    listview = ""
+
+    ## TaskView: This class show the taskt data.
+    taskBox = ""
+
     ## Constructor
     def __init__(self, *args): 
         QtGui.QMainWindow.__init__(self, *args)
@@ -97,10 +103,10 @@ class MoldauMainWindow(QtGui.QMainWindow):
         # ----------- Left box ---------------------------------
 
         # VBox left with GrouBox-frame
-        taskBox = QtGui.QGroupBox("Stap list")
+        listBox = QtGui.QGroupBox("Stap list")
         vListLayoutL = QtGui.QVBoxLayout()
-        taskBox.setLayout(vListLayoutL)
-        hMainLayout.addWidget(taskBox)
+        listBox.setLayout(vListLayoutL)
+        hMainLayout.addWidget(listBox)
         
 
         # -------------- Tree ----------------
@@ -124,21 +130,23 @@ class MoldauMainWindow(QtGui.QMainWindow):
         #stepListTypLabel = QtGui.QLabel("Step:")
         #vListLayoutL.addWidget(stepListTypLabel)
 
-        # Siple List
-        listview = QtGui.QListWidget()
-        vListLayoutL.addWidget(listview)
+        self.listview = QtGui.QListWidget()
+        vListLayoutL.addWidget(self.listview)
+        self.connect(self.listview, QtCore.SIGNAL('itemSelectionChanged()'), QtCore.SLOT('fillTaskView()'))
+#        self.connect(self.listview, QtCore.SIGNAL('itemSelectionChanged()'), QtCore.SLOT('selctTasksSettingDialog()'))
+#        self.connect(self.listview, QtCore.SIGNAL('itemClicked()'), QtCore.SLOT('fillTaskView()'))
         ## Item-List
         count = 0
         for item in self.tasksSettings.getStoryboard():
           print item
-          listview.insertItem(count, item)
+          self.listview.insertItem(count, item)
           count = count + 1
-        listview.insertItem(count, "ende")
+        self.listview.insertItem(count, "ende")
         
         # ----------- Rigth Box -------------------
         
-        taskBox = TaskView()
-        hMainLayout.addWidget(taskBox)
+        self.taskBox = TaskView()
+        hMainLayout.addWidget(self.taskBox)
 
         # Statusbar
         self.statusBar().showMessage('Ready')
@@ -154,6 +162,10 @@ class MoldauMainWindow(QtGui.QMainWindow):
         print "filename: " + filename
         self.moldauConf.setTasksSettingsFile(filename)
 
-
-
-
+    ## A function with qt-slot. it's fill the TaskView with data. 
+    @pyqtSlot()
+    def fillTaskView(self):
+        for item in self.listview.selectedItems():
+            print  ".." , item.text()
+            self.taskBox.nameLineEdit.setText(item.text())
+            self.taskBox.nameLineEdit.setReadOnly(True)
