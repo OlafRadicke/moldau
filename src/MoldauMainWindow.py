@@ -113,6 +113,7 @@ class MoldauMainWindow(QtGui.QMainWindow):
         vListLayoutR = QtGui.QVBoxLayout()
         hMainLayout.addLayout(vListLayoutR)
 
+
         # ----------- Rigth Box -------------------
 
         # Task name
@@ -133,10 +134,18 @@ class MoldauMainWindow(QtGui.QMainWindow):
         descriptionLineEdit = QtGui.QLineEdit()
         hLayoutDescription.addWidget(descriptionLineEdit)
 
+        ## VBox Right2
+        groupBox = QtGui.QGroupBox("Todo")
+        vListLayoutR2 = QtGui.QVBoxLayout()
+        groupBox.setLayout(vListLayoutR2)
+        vListLayoutR.addWidget(groupBox)
+#        vListLayoutR.addLayout(vListLayoutR2)
+#        vListLayoutR.addWidget(groupBox)  
+
         # Task stap typ
         hLayoutStepTyp = QtGui.QHBoxLayout()
-        vListLayoutR.addLayout(hLayoutStepTyp)
-        stepTypLabel = QtGui.QLabel("Step Typ:")
+        vListLayoutR2.addLayout(hLayoutStepTyp)
+        stepTypLabel = QtGui.QLabel("Step typ:")
         hLayoutStepTyp.addWidget(stepTypLabel)
         stepTypComboBox = QtGui.QComboBox()
         stepTypComboBox.addItem("replacement")
@@ -146,8 +155,8 @@ class MoldauMainWindow(QtGui.QMainWindow):
 
         # Task Bash Command
         hLayoutBashCommand = QtGui.QHBoxLayout()
-        vListLayoutR.addLayout(hLayoutBashCommand)
-        bashCommandLabel = QtGui.QLabel("Bash Command:")
+        vListLayoutR2.addLayout(hLayoutBashCommand)
+        bashCommandLabel = QtGui.QLabel("Bash command:")
         hLayoutBashCommand.addWidget(bashCommandLabel)
         bashCommandLineEdit = QtGui.QLineEdit()
         hLayoutBashCommand.addWidget(bashCommandLineEdit)
@@ -155,18 +164,19 @@ class MoldauMainWindow(QtGui.QMainWindow):
 
         # original file
         hLayoutOriginalFile = QtGui.QHBoxLayout()
-        vListLayoutR.addLayout(hLayoutOriginalFile)
-        originalFileLabel = QtGui.QLabel("Original File:")
+        vListLayoutR2.addLayout(hLayoutOriginalFile)
+        originalFileLabel = QtGui.QLabel("Original file:")
         hLayoutOriginalFile.addWidget(originalFileLabel)
         originalFileLineEdit = QtGui.QLineEdit()
         hLayoutOriginalFile.addWidget(originalFileLineEdit)
         originalFilePushButton = QtGui.QPushButton("...")
         hLayoutOriginalFile.addWidget(originalFilePushButton)
 
+
         # file for replacement
         hLayoutReplacementFile = QtGui.QHBoxLayout()
-        vListLayoutR.addLayout(hLayoutReplacementFile)
-        replacementFileLabel = QtGui.QLabel("File for Replacement:")
+        vListLayoutR2.addLayout(hLayoutReplacementFile)
+        replacementFileLabel = QtGui.QLabel("File for replacement:")
         hLayoutReplacementFile.addWidget(replacementFileLabel)
         replacementFileLineEdit = QtGui.QLineEdit()
         hLayoutReplacementFile.addWidget(replacementFileLineEdit)
