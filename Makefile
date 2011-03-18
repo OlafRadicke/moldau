@@ -1,10 +1,12 @@
 
-DOCS         = docs
-DOXYFILE     = docs/Doxyfile
-DOXYDIR      = docs/doxygen
+SHELL        = /bin/sh
 
-OUTPUT_DIST  = dist/
-OUTPUT_BUILD = build/
+DOCS         = ./docs
+DOXYFILE     = ./docs/Doxyfile
+DOXYDIR      = ./docs/doxygen
+
+OUTPUT_DIST  = ./dist
+OUTPUT_BUILD = ./build
 PREFIX       = /usr/local/share
 BINDIR       = /usr/local/bin
 
@@ -12,8 +14,8 @@ BINDIR       = /usr/local/bin
 
 
 all: $(wildcard $(OUTPUT_DIST)) $(wildcard $(OUTPUT_BUILD)) doxygen
-	mkdir ./$(OUTPUT_BUILD)
-	cp ./src/*.py  ./$(OUTPUT_BUILD)
+	mkdir $(OUTPUT_BUILD)
+	cp ./src/*.py  $(OUTPUT_BUILD)
 
 
 check:
@@ -26,18 +28,33 @@ clean:
 	$(RM) -r $(wildcard $(DOXYDIR))
 
 
-dist:
-	echo "sorry, does not implement!"
+dist: doxygen
+	mkdir $(OUTPUT_BUILD)
+	cp ./GPL3.txt  $(OUTPUT_BUILD)
+	cp ./README.txt  $(OUTPUT_BUILD)
+	mkdir $(OUTPUT_BUILD)/src
+	cp ./src/*.py  $(OUTPUT_BUILD)/src/
+	mkdir ./$(OUTPUT_BUILD)/icons
+	cp ./icons/*  $(OUTPUT_BUILD)/icons/
+	cp -R ./example  $(OUTPUT_BUILD)
+	mkdir $(OUTPUT_BUILD)/docs
+	cp -R ./docs/*  $(OUTPUT_BUILD)/docs/
+	ln -s $(OUTPUT_BUILD)/src/moldau.py $(OUTPUT_BUILD)/moldau
+
+tar: dist
+	tar -cvzf ./moldau_`date +%F`.tar.gz $(OUTPUT_BUILD)
 
 
 install:
-	cp -r ./$(OUTPUT_BUILD)/* $(PREFIX)/moldau/
+	cp -r $(OUTPUT_BUILD)/* $(PREFIX)/moldau/
 	ln -s $(PREFIX)/moldau/moldau.py $(BINDIR)/moldau
-	cp ./example/ $(PREFIX)/moldau/
+	cp -R ./example $(PREFIX)/moldau/
+	cp -R ./icons $(PREFIX)/moldau/
 
 
 uninstall:
-	echo "sorry, does not implement!"
+	$(RM) -r $(PREFIX)/moldau
+	
 
 
 # build doxygen-docs
