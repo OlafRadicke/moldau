@@ -51,7 +51,9 @@ class MoldauMainWindow(QtGui.QMainWindow):
     def __init__(self, *args): 
         QtGui.QMainWindow.__init__(self, *args)
 
-        self.setMinimumSize(800,680)
+        self.resize(800,680)
+        self.setWindowTitle('Moldau')
+
 
         #---------- menubar --------------------
         ## Menue-item for apliction exit
@@ -72,6 +74,38 @@ class MoldauMainWindow(QtGui.QMainWindow):
         menuFile = menubar.addMenu('&File')
         menuFile.addAction(menuExit)
         menuFile.addAction(menuTasksSetting)
+
+        # ------------- menu end ------------
+
+        # ----------- toolbar ---------------------
+        self.toolbar = self.addToolBar('tools')
+        
+        toolNew = QtGui.QAction(QtGui.QIcon('icons/new.png'), 'New task', self)
+        toolNew.setShortcut('Ctrl+N')
+#       self.connect(toolNew, QtCore.SIGNAL('triggered()'), QtCore.SLOT('close()'))
+        self.toolbar.addAction(toolNew)
+
+        toolRemove = QtGui.QAction(QtGui.QIcon('icons/remove.png'), 'Delete task', self)
+#        toolNew.setShortcut('Ctrl+R')
+#       self.connect(toolNew, QtCore.SIGNAL('triggered()'), QtCore.SLOT('close()'))
+        self.toolbar.addAction(toolRemove)
+
+        toolDown = QtGui.QAction(QtGui.QIcon('icons/down.png'), 'Move task down', self)
+#        toolNew.setShortcut('Ctrl+R')
+#       self.connect(toolNew, QtCore.SIGNAL('triggered()'), QtCore.SLOT('close()'))
+        self.toolbar.addAction(toolDown)
+
+        toolUp = QtGui.QAction(QtGui.QIcon('icons/up.png'), 'Move task up', self)
+#        toolNew.setShortcut('Ctrl+R')
+#       self.connect(toolNew, QtCore.SIGNAL('triggered()'), QtCore.SLOT('close()'))
+        self.toolbar.addAction(toolUp)
+
+        toolRun = QtGui.QAction(QtGui.QIcon('icons/run.png'), 'Run task list', self)
+#        toolNew.setShortcut('Ctrl+R')
+#       self.connect(toolNew, QtCore.SIGNAL('triggered()'), QtCore.SLOT('close()'))
+        self.toolbar.addAction(toolRun)
+
+        # ----------- toolbar end ------------------------
 
 
 
@@ -168,4 +202,3 @@ class MoldauMainWindow(QtGui.QMainWindow):
         for item in self.listview.selectedItems():
             print  ".." , item.text()
             self.taskBox.nameLineEdit.setText(item.text())
-            self.taskBox.nameLineEdit.setReadOnly(True)

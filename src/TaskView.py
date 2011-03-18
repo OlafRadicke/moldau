@@ -63,6 +63,7 @@ class TaskView(QtGui.QGroupBox):
         nameLabel = QtGui.QLabel("Name:")
         hLayoutName.addWidget(nameLabel)
         self.nameLineEdit = QtGui.QLineEdit()
+        self.nameLineEdit.setReadOnly(True)
         hLayoutName.addWidget(self.nameLineEdit)
 
 
@@ -124,18 +125,32 @@ class TaskView(QtGui.QGroupBox):
         hLayoutReplacementFile.addWidget(replacementFilePushButton)
         
 
+
+        ## VBox Right3
+        doControlGroupBox = QtGui.QGroupBox("Task control")
+        vListLayoutR3 = QtGui.QVBoxLayout()
+        doControlGroupBox.setLayout(vListLayoutR3)
+        vListLayoutR.addWidget(doControlGroupBox)
+
         # Stop before execute task
         beforeCheckBox = QtGui.QCheckBox("Stop before execute task")
-        vListLayoutR.addWidget(beforeCheckBox)
+        vListLayoutR3.addWidget(beforeCheckBox)
 
         ## Stop after execute task if "True"
         afterCheckBox = QtGui.QCheckBox("Stop after execute task")
-        vListLayoutR.addWidget(afterCheckBox)
+        vListLayoutR3.addWidget(afterCheckBox)
 
         ## Skip this task if set "True"
         skipCheckBox = QtGui.QCheckBox("Skip this task")
-        vListLayoutR.addWidget(skipCheckBox)
+        vListLayoutR3.addWidget(skipCheckBox)
 
 
 
+        # Button bar
+        hLayoutButtonBar = QtGui.QHBoxLayout()
+        vListLayoutR.addLayout(hLayoutButtonBar)
+        resetPushButton = QtGui.QPushButton("Reset")
+        hLayoutButtonBar.addWidget(resetPushButton)
+        savePushButton = QtGui.QPushButton("Save")
+        hLayoutButtonBar.addWidget(savePushButton)
 

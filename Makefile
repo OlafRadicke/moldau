@@ -5,7 +5,7 @@ DOXYDIR      = docs/doxygen
 
 OUTPUT_DIST  = dist/
 OUTPUT_BUILD = build/
-PREFIX       = /usr/local
+PREFIX       = /usr/local/share
 BINDIR       = /usr/local/bin
 
 ############  Rules  ############
