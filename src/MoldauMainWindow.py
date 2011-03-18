@@ -47,6 +47,12 @@ class MoldauMainWindow(QtGui.QMainWindow):
     ## TaskView: This class show the taskt data.
     taskBox = ""
 
+    ## Minutes of the proceedings
+    minutes = ""
+
+    ## This QTextBrowser show the minutes of the proceedings
+    textView = ""
+
     ## Constructor
     def __init__(self, *args): 
         QtGui.QMainWindow.__init__(self, *args)
@@ -125,14 +131,46 @@ class MoldauMainWindow(QtGui.QMainWindow):
 
         # VBox left with GrouBox-frame
         resultBox = QtGui.QGroupBox("Comand result:")
-        bottomLayout = QtGui.QHBoxLayout()
+        bottomLayout = QtGui.QVBoxLayout()
         resultBox.setLayout(bottomLayout)
         vMainLayout.addWidget(resultBox)
 
         
         # Bottom text view
-        textView = QtGui.QTextBrowser()
-        bottomLayout.addWidget(textView)
+        self.textView = QtGui.QTextBrowser()
+        bottomLayout.addWidget(self.textView)
+
+
+        textExample = "<b>Welt!</b> <br>"
+        textExample = textExample + "<table border=\"1\">"
+        textExample = textExample +  "  <tr>"
+        textExample = textExample +  "    <th>Berlin</th>"
+        textExample = textExample +  "    <th>Hamburg</th>"
+        textExample = textExample +  "    <th>M&uuml;nchen</th>"
+        textExample = textExample +  "  </tr>"
+        textExample = textExample +  "  <tr>"
+        textExample = textExample +  "    <td>Milj&ouml;h</td>"
+        textExample = textExample +  "    <td>Kiez</td>"
+        textExample = textExample +  "    <td>Bierdampf</td>"
+        textExample = textExample +  "  </tr>"
+        textExample = textExample +  "  <tr>"
+        textExample = textExample +  "    <td>Buletten</td>"
+        textExample = textExample +  "    <td>Frikadellen</td>"
+        textExample = textExample +  "    <td>Fleischpflanzerl</td>"
+        textExample = textExample +  "  </tr>"
+        self.minutes = textExample +  "</table>"
+
+        self.textView.setHtml(self.minutes)
+
+        # Button bar
+        hLayoutButtonBar = QtGui.QHBoxLayout()
+        bottomLayout.addLayout(hLayoutButtonBar)
+        clearPushButton = QtGui.QPushButton("Clear minutes")
+        self.connect(clearPushButton, QtCore.SIGNAL('pressed()'), QtCore.SLOT('clearMinutes()'))
+        hLayoutButtonBar.addWidget(clearPushButton)
+        savePushButton = QtGui.QPushButton("Save minutes as...")
+        hLayoutButtonBar.addWidget(savePushButton)
+
 
         # ----------- Left box ---------------------------------
 
@@ -167,8 +205,6 @@ class MoldauMainWindow(QtGui.QMainWindow):
         self.listview = QtGui.QListWidget()
         vListLayoutL.addWidget(self.listview)
         self.connect(self.listview, QtCore.SIGNAL('itemSelectionChanged()'), QtCore.SLOT('fillTaskView()'))
-#        self.connect(self.listview, QtCore.SIGNAL('itemSelectionChanged()'), QtCore.SLOT('selctTasksSettingDialog()'))
-#        self.connect(self.listview, QtCore.SIGNAL('itemClicked()'), QtCore.SLOT('fillTaskView()'))
         ## Item-List
         count = 0
         for item in self.tasksSettings.getStoryboard():
@@ -190,7 +226,6 @@ class MoldauMainWindow(QtGui.QMainWindow):
     # change sie Tasks-Setting-Configuration
     @pyqtSlot()
     def selctTasksSettingDialog(self):
-
         print "selctTasksSettingDialog"
         filename=QtGui.QFileDialog.getOpenFileName(self, "Change tasks-Setting-Configuration", self.moldauConf.getTasksSettingsFile(),"*.*")
         print "filename: " + filename
@@ -202,3 +237,10 @@ class MoldauMainWindow(QtGui.QMainWindow):
         for item in self.listview.selectedItems():
             print  ".." , item.text()
             self.taskBox.nameLineEdit.setText(item.text())
+
+    ## Function clear the minutes in the textView
+    @pyqtSlot()
+    def clearMinutes(self):
+        print "clearMinutes..."
+        self.minutes = ""
+        self.textView.setHtml(self.minutes)
