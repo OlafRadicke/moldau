@@ -19,28 +19,44 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-## Oject-Typ for handling tasks.
+## Object-Typ for handling tasks.
 class TaskTyp:
 
-    ## Constructor
-    def __init__(self):
 
-        ## The ID of a Task.
-        ID = ""
-    
-        ## The Bash command, to do.
-        BashCommand = ""
-    
-        ## Stop before execute task if "True"
-        StopBefore = False
-    
-        ## Stop after execute task if "True"
-        StopAfter = False
+    ## The ID of a Task.
+    ID = ""
 
-        ## A depiction of this task.
-        Depiction = ""
+    ## What typ of todo it is. "bash_command" or "replacement"
+    #bash_command is do a bash command.
+    #replacement is replace a old file with a new file.
+    TodoTyp = "bash_command"
 
-print "läuft..."
-mc = MainClass()
-mc.Start()
-mc.Stop()
+    ## The Bash command, to do.
+    BashCommand = ""
+
+    ## The file name which we would like remove.
+    OldFile = ""
+
+    ## The file name which we over write the old file.
+    NewFile = ""
+
+    ## Stop before execute task if "True"
+    StopBefore = "False"
+
+    ## Stop after execute task if "True"
+    StopAfter = "False"
+
+    ## A depiction of this task.
+    Depiction = ""
+
+    ##  It is "True" if skip this stap. Or "False".
+    SkipStap = "False"
+
+
+    # Constructor
+#    def __init__(self):
+
+
+
+
+

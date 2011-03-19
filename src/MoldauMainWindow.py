@@ -29,6 +29,7 @@ from PyQt4.QtCore import pyqtSlot
 from MoldauConf import MoldauConf
 from TasksSettings import TasksSettings
 from TaskView import TaskView
+from TaskTyp import TaskTyp
 
 
 
@@ -217,6 +218,8 @@ class MoldauMainWindow(QtGui.QMainWindow):
         
         self.taskBox = TaskView()
         hMainLayout.addWidget(self.taskBox)
+        self.taskBox.setMoldauConf(self.moldauConf)
+        self.taskBox.setTasksSettings(self.tasksSettings)
 
         # Statusbar
         self.statusBar().showMessage('Ready')
@@ -234,9 +237,16 @@ class MoldauMainWindow(QtGui.QMainWindow):
     ## A function with qt-slot. it's fill the TaskView with data. 
     @pyqtSlot()
     def fillTaskView(self):
+        todo = ""
         for item in self.listview.selectedItems():
             print  ".." , item.text()
-            self.taskBox.nameLineEdit.setText(item.text())
+            todo = item.text()
+
+        if( todo == "" ):
+            self.statusBar().showMessage('No ToDo select...')
+        else:
+          taskTyp = self.tasksSettings.getTaskTyp(todo)
+          self.taskBox.setTaskTyp(taskTyp)
 
     ## Function clear the minutes in the textView
     @pyqtSlot()

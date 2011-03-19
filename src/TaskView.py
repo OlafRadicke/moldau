@@ -36,13 +36,38 @@ from TasksSettings import TasksSettings
 class TaskView(QtGui.QGroupBox):
 
 
-    ## configuraton of this applikation.
+    ## Typ:.MoldauConf.  configuraton of this applikation.
     moldauConf   = MoldauConf()
-    ## The setings  of taskts.
+    
+    ## Typ:.TasksSettings.  The setings  of taskts.
     tasksSettings = TasksSettings(moldauConf.getTasksSettingsFile())
 
-    ## QtGui.QLineEdit: Text fild for name of Task
+    ## Typ:.LineEdit.  QtGui.QLineEdit: Text fild for name of Task
     nameLineEdit = ""
+
+    ## Typ:.LineEdit.  LineEdit for description.
+    descriptionLineEdit = ""
+
+    ## Typ:.ComboBox.  ComboBox show the typ of Todo
+    todoTypComboBox = ""
+
+    ## Typ:.LineEdit.  The bash command 
+    bashCommandLineEdit = ""
+
+    ## Typ:.LineEdit.  original file path.
+    originalFileLineEdit = ""
+
+    ## Typ:.LineEdit.   The path too file for substitude sie original old file.
+    replacementFileLineEdit = ""
+
+    ## Typ: CheckBox.  Is stoped before execute task, if "True"
+    beforeCheckBox = ""
+
+    ##  Typ: CheckBox. Stop after execute task if "True"
+    afterCheckBox = ""
+
+    ## Skip this task if set "True"
+    skipCheckBox = ""
 
     ## Constructor
     def __init__(self):
@@ -73,8 +98,8 @@ class TaskView(QtGui.QGroupBox):
         vListLayoutR.addLayout(hLayoutDescription)
         descriptionLabel = QtGui.QLabel("Description:")
         hLayoutDescription.addWidget(descriptionLabel)
-        descriptionLineEdit = QtGui.QLineEdit()
-        hLayoutDescription.addWidget(descriptionLineEdit)
+        self.descriptionLineEdit = QtGui.QLineEdit()
+        hLayoutDescription.addWidget(self.descriptionLineEdit)
 
         ## VBox Right2
         toDoGroupBox = QtGui.QGroupBox("Todo")
@@ -88,10 +113,10 @@ class TaskView(QtGui.QGroupBox):
         vListLayoutR2.addLayout(hLayoutStepTyp)
         stepTypLabel = QtGui.QLabel("Step typ:")
         hLayoutStepTyp.addWidget(stepTypLabel)
-        stepTypComboBox = QtGui.QComboBox()
-        stepTypComboBox.addItem("replacement")
-        stepTypComboBox.addItem("bash_command")
-        hLayoutStepTyp.addWidget(stepTypComboBox)
+        self.todoTypComboBox = QtGui.QComboBox()
+        self.todoTypComboBox.addItem("replacement")
+        self.todoTypComboBox.addItem("bash_command")
+        hLayoutStepTyp.addWidget(self.todoTypComboBox)
 
 
         # Task Bash Command
@@ -99,8 +124,8 @@ class TaskView(QtGui.QGroupBox):
         vListLayoutR2.addLayout(hLayoutBashCommand)
         bashCommandLabel = QtGui.QLabel("Bash command:")
         hLayoutBashCommand.addWidget(bashCommandLabel)
-        bashCommandLineEdit = QtGui.QLineEdit()
-        hLayoutBashCommand.addWidget(bashCommandLineEdit)
+        self.bashCommandLineEdit = QtGui.QLineEdit()
+        hLayoutBashCommand.addWidget(self.bashCommandLineEdit)
 
 
         # original file
@@ -108,8 +133,8 @@ class TaskView(QtGui.QGroupBox):
         vListLayoutR2.addLayout(hLayoutOriginalFile)
         originalFileLabel = QtGui.QLabel("Original file:")
         hLayoutOriginalFile.addWidget(originalFileLabel)
-        originalFileLineEdit = QtGui.QLineEdit()
-        hLayoutOriginalFile.addWidget(originalFileLineEdit)
+        self.originalFileLineEdit = QtGui.QLineEdit()
+        hLayoutOriginalFile.addWidget(self.originalFileLineEdit)
         originalFilePushButton = QtGui.QPushButton("...")
         hLayoutOriginalFile.addWidget(originalFilePushButton)
 
@@ -119,8 +144,8 @@ class TaskView(QtGui.QGroupBox):
         vListLayoutR2.addLayout(hLayoutReplacementFile)
         replacementFileLabel = QtGui.QLabel("File for replacement:")
         hLayoutReplacementFile.addWidget(replacementFileLabel)
-        replacementFileLineEdit = QtGui.QLineEdit()
-        hLayoutReplacementFile.addWidget(replacementFileLineEdit)
+        self.replacementFileLineEdit = QtGui.QLineEdit()
+        hLayoutReplacementFile.addWidget(self.replacementFileLineEdit)
         replacementFilePushButton = QtGui.QPushButton("...")
         hLayoutReplacementFile.addWidget(replacementFilePushButton)
         
@@ -133,16 +158,16 @@ class TaskView(QtGui.QGroupBox):
         vListLayoutR.addWidget(doControlGroupBox)
 
         # Stop before execute task
-        beforeCheckBox = QtGui.QCheckBox("Stop before execute task")
-        vListLayoutR3.addWidget(beforeCheckBox)
+        self.beforeCheckBox = QtGui.QCheckBox("Stop before execute task")
+        vListLayoutR3.addWidget(self.beforeCheckBox)
 
         ## Stop after execute task if "True"
-        afterCheckBox = QtGui.QCheckBox("Stop after execute task")
-        vListLayoutR3.addWidget(afterCheckBox)
+        self.afterCheckBox = QtGui.QCheckBox("Stop after execute task")
+        vListLayoutR3.addWidget(self.afterCheckBox)
 
         ## Skip this task if set "True"
-        skipCheckBox = QtGui.QCheckBox("Skip this task")
-        vListLayoutR3.addWidget(skipCheckBox)
+        self.skipCheckBox = QtGui.QCheckBox("Skip this task")
+        vListLayoutR3.addWidget(self.skipCheckBox)
 
 
 
@@ -154,3 +179,45 @@ class TaskView(QtGui.QGroupBox):
         savePushButton = QtGui.QPushButton("Save")
         hLayoutButtonBar.addWidget(savePushButton)
 
+
+
+    ## Set configuraton of this applikation.
+    def setMoldauConf(self, conf):
+        self.moldauConf = conf
+
+    ## Set the setings  of taskts.
+    def setTasksSettings(self, setings):
+        tasksSettings = setings
+
+    ## Set the task and show his data.
+    def setTaskTyp(self, task):
+        self.nameLineEdit.setText(task.ID)
+        self.descriptionLineEdit.setText(task.Depiction)
+
+        item_index = self.todoTypComboBox.findText(task.TodoTyp)
+        if (item_index == -1):
+            self.todoTypComboBox.addItem(task.TodoTyp)
+        else:
+            self.todoTypComboBox.setCurrentIndex(item_index)
+
+        self.bashCommandLineEdit.setText(task.BashCommand)
+        self.originalFileLineEdit.setText(task.OldFile)
+        self.replacementFileLineEdit.setText(task.NewFile)
+
+        if (task.StopBefore == "False"):
+            self.beforeCheckBox.setChecked(False)
+        else:
+            self.beforeCheckBox.setChecked(True)
+
+        if (task.StopAfter == "False"):
+            self.afterCheckBox.setChecked(False)
+        else:
+            self.afterCheckBox.setChecked(True)
+
+        if (task.SkipStap == "False"):
+            self.skipCheckBox.setChecked(False)
+        else:
+            self.skipCheckBox.setChecked(True)
+
+
+          

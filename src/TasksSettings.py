@@ -24,6 +24,7 @@
 import ConfigParser
 import sys
 import os.path
+from TaskTyp import TaskTyp
 
 ## @file zsettings.py
 # @author Olaf Radicke<radicke@atix.de>
@@ -47,21 +48,21 @@ class TasksSettings:
         # A example for a task with a replacement.
         self.config.add_section("stap_010")
         self.config.set("stap_010", "stap_typ", "replacement")
-        self.config.set("stap_020", "commant", "")
+        self.config.set("stap_010", "commant", "")
         self.config.set("stap_010", "old_file", "~/var/oldfile.txt")
         self.config.set("stap_010", "new_file", "~/var/newfile.txt")
         self.config.set("stap_010", "description", "write a comment.")
-        self.config.set("stap_020", "stop_before_do", "False")
-        self.config.set("stap_020", "stop_after_do", "True")
-        self.config.set("stap_020", "skip_stap", "False")
+        self.config.set("stap_010", "stop_before_do", "False")
+        self.config.set("stap_010", "stop_after_do", "True")
+        self.config.set("stap_010", "skip_stap", "False")
 
 
         # A example for a task with a bash command.
         self.config.add_section("stap_020")
         self.config.set("stap_020", "stap_typ", "bash_command")
         self.config.set("stap_020", "commant", "ls -lah")
-        self.config.set("stap_010", "old_file", "")
-        self.config.set("stap_010", "new_file", "")
+        self.config.set("stap_020", "old_file", "")
+        self.config.set("stap_020", "new_file", "")
         self.config.set("stap_020", "description", "write a comment.")
         self.config.set("stap_020", "stop_before_do", "False")
         self.config.set("stap_020", "stop_after_do", "True")
@@ -116,63 +117,113 @@ class TasksSettings:
             print(e)
 #            sys.exit(0)
 
+    ##  @param todo a todo in the list of "Storyboard".
+    # @return get a class of TaskTyp
+    def getTaskTyp(self, todo):
+        taskTyp = TaskTyp
+        taskTyp.ID = todo
+        taskTyp.Depiction = self.getDescription(todo)
+        taskTyp = TaskTyp()
+        taskTyp.BashCommand = self.getTodoCommand(todo)
+        taskTyp.OldFile = self.getOldFile(todo)
+        taskTyp.NewFile  = self.getNewFile(todo)
+        taskTyp.StopBefore = self.isStopBeforeDo(todo)
+        taskTyp.StopAfter = self.isStopAfterDo(todo)
+        taskTyp.SkipStap = self.isSkipStap(todo)
+        return taskTyp
+      
     ##
-    # @param todo  the todo from the config-file which is meaning.
+    # @param todo a todo in the list of "Storyboard".
     # @return get the typ of a todo.
     def getTodoTyp(self, todo):
-        conf_value  = self.config.get(todo, "stap_typ")
+        try:
+            conf_value  = self.config.get(todo, "stap_typ")
+        except:
+            print "[OR2011]"
+            conf_value  = "bash_command"
         return conf_value
 
     ##
-    # @param todo  the todo from the config-file which is meaning.
+    # @param todo a todo in the list of "Storyboard".
     # @return get the command of a bash comand todo.
     def getTodoCommand(self, todo):
-        conf_value  = self.config.get(todo, "commant")
+        try:
+            conf_value  = self.config.get(todo, "commant")
+        except:
+            print "[OR2011]"
+            conf_value  = ""
         return conf_value
 
     ##
-    # @param todo  the todo from the config-file which is meaning.
+    # @param todo a todo in the list of "Storyboard".
     # @return return the file name which we would like remove.
     def getOldFile(self, todo):
-        conf_value  = self.config.get(todo, "old_file")
+        try:
+            conf_value  = self.config.get(todo, "old_file")
+        except:
+            print "[OR2011]"
+            conf_value  = ""
         return conf_value
 
     ##
-    # @param todo  the todo from the config-file which is meaning.
-    # @return return the file name which we would like remove.
+    # @param todo a todo in the list of "Storyboard".
+    # @return return the file name which we over write the old file.
     def getNewFile(self, todo):
-        conf_value  = self.config.get(todo, "new_file")
+        try:
+            conf_value  = self.config.get(todo, "new_file")
+        except:
+            print "[OR2011]"
+            conf_value  = ""
         return conf_value
 
     ##
-    # @param todo  the todo from the config-file which is meaning.
+    # @param todo a todo in the list of "Storyboard".
     # @return return the description of a stap.
     def getDescription(self, todo):
-        conf_value  = self.config.get(todo, "description")
+        try:
+            conf_value  = self.config.get(todo, "description")
+        except:
+            print "[OR2011]"
+            conf_value  = ""
         return conf_value
 
 
     ##
-    # @param todo  the todo from the config-file which is meaning.
+    # @param todo a todo in the list of "Storyboard".
     # @return return "True" if stop by stap before do the task.
     # Else return "False".
     def isStopBeforeDo(self, todo):
-        conf_value  = self.config.get(todo, "stop_before_do")
+        try:
+            conf_value  = self.config.get(todo, "stop_before_do")
+        except:
+            print "[OR2011]"
+            conf_value  = "False"
         return conf_value
 
     ##
-    # @param todo  the todo from the config-file which is meaning.
+    # @param todo a todo in the list of "Storyboard".
     # @return return "True" if stop by stap after do the task.
     # Else return "False".
     def isStopAfterDo(self, todo):
+        print "---Storyboard:", self.getStoryboard()
         conf_value  = self.config.get(todo, "stop_after_do")
+        print "---Storyboard:", self.getStoryboard()
+        try:
+            conf_value  = self.config.get(todo, "stop_after_do")
+        except:
+            print "[OR2011]"
+            conf_value  =  "False"
         return conf_value
         
     ##
-    # @param todo  the todo from the config-file which is meaning.
+    # @param todo a todo in the list of "Storyboard".
     # @return return "True" if skip this stap.
     # Else return "False".
     def isSkipStap(self, todo):
-        conf_value  = self.config.get(todo, "skip_stap")
+        try:
+            conf_value  = self.config.get(todo, "skip_stap")
+        except:
+            print "[OR2011]"
+            conf_value  =  "False"
         return conf_value
     
