@@ -22,6 +22,8 @@
  ###########################################################################
 
 import ConfigParser
+from PyQt4 import QtGui, QtCore
+
 import sys
 import os.path
 from TaskTyp import TaskTyp
@@ -38,6 +40,7 @@ class TasksSettings:
 
         self.configFile = conf_file
         self.config = ConfigParser.ConfigParser()
+#        self.config = ConfigParser.SafeConfigParser()
         self.config.read(self.configFile)
 
     ## generate a new config file with default and exsample values.
@@ -46,7 +49,7 @@ class TasksSettings:
         self.config.set("storyboard", "staps", "stap_010;stap_020")
 
         # A example for a task with a replacement.
-        self.config.add_section("stap_010")
+        self.config.add_section(u'stap_010')
         self.config.set("stap_010", "stap_typ", "replacement")
         self.config.set("stap_010", "commant", "")
         self.config.set("stap_010", "old_file", "~/var/oldfile.txt")
@@ -58,7 +61,7 @@ class TasksSettings:
 
 
         # A example for a task with a bash command.
-        self.config.add_section("stap_020")
+        self.config.add_section(u'stap_020')
         self.config.set("stap_020", "stap_typ", "bash_command")
         self.config.set("stap_020", "commant", "ls -lah")
         self.config.set("stap_020", "old_file", "")
@@ -206,7 +209,13 @@ class TasksSettings:
     # Else return "False".
     def isStopAfterDo(self, todo):
         print self.configFile
+        print "todo: '" + todo + "'\n"
+        if (todo.toAscii() == "stap_020"):
+            print "gleich!"
+        # parsing QString -> ascii
+        todo = str(todo)
         print "---Storyboard:", self.getStoryboard()
+        conf_value  = self.config.get("stap_020", "stop_after_do")
         conf_value  = self.config.get(todo, "stop_after_do")
         print "---Storyboard:", self.getStoryboard()
         try:

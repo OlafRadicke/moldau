@@ -78,6 +78,7 @@ class TaskView(QtGui.QGroupBox):
         # VBox Right with GrouBox-frame
 #        taskBox = QtGui.QGroupBox("Stap details")
         self.setTitle("Stap details")
+        self.setFlat(False)
         vListLayoutR = QtGui.QVBoxLayout()
         self.setLayout(vListLayoutR)
 #        hMainLayout.addWidget(taskBox)
