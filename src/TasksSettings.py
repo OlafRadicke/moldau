@@ -205,6 +205,7 @@ class TasksSettings:
     # @return return "True" if stop by stap after do the task.
     # Else return "False".
     def isStopAfterDo(self, todo):
+        print self.configFile
         print "---Storyboard:", self.getStoryboard()
         conf_value  = self.config.get(todo, "stop_after_do")
         print "---Storyboard:", self.getStoryboard()
