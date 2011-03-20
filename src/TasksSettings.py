@@ -103,6 +103,10 @@ class TasksSettings:
 
     def setConfFile(self, value):
         self.configFile = value
+        self.config = ConfigParser.ConfigParser()
+        self.config.read(self.configFile)
+        print "Read: " , self.configFile
+        print "Storyboard: " , self.getStoryboard()
         
 # ========= get-functions ================
 
@@ -123,10 +127,10 @@ class TasksSettings:
     ##  @param todo a todo in the list of "Storyboard".
     # @return get a class of TaskTyp
     def getTaskTyp(self, todo):
-        taskTyp = TaskTyp
+        taskTyp = TaskTyp()
         taskTyp.ID = todo
         taskTyp.Depiction = self.getDescription(todo)
-        taskTyp = TaskTyp()
+        taskTyp.TodoTyp = self.getTodoTyp(todo)
         taskTyp.BashCommand = self.getTodoCommand(todo)
         taskTyp.OldFile = self.getOldFile(todo)
         taskTyp.NewFile  = self.getNewFile(todo)

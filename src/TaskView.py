@@ -117,6 +117,7 @@ class TaskView(QtGui.QGroupBox):
         self.todoTypComboBox = QtGui.QComboBox()
         self.todoTypComboBox.addItem("replacement")
         self.todoTypComboBox.addItem("bash_command")
+        self.connect(self.todoTypComboBox, QtCore.SIGNAL('currentIndexChanged(QString)'), QtCore.SLOT('todoTypComboBoxChange(QString)'))
         hLayoutStepTyp.addWidget(self.todoTypComboBox)
 
 
@@ -220,5 +221,20 @@ class TaskView(QtGui.QGroupBox):
         else:
             self.skipCheckBox.setChecked(True)
 
+        index_text = self.todoTypComboBox.currentText()
+        self.todoTypComboBoxChange(index_text)
 
+    ## it is action if todoTypComboBox change
+    @pyqtSlot(QtCore.QString)
+    def todoTypComboBoxChange(self, text):
+        if (text == "bash_command"):
+            self.originalFileLineEdit.setEnabled(False)
+            self.replacementFileLineEdit.setEnabled(False)
+            self.bashCommandLineEdit.setEnabled(True)
+        elif(text == "replacement"):
+            self.originalFileLineEdit.setEnabled(True)
+            self.replacementFileLineEdit.setEnabled(True)
+            self.bashCommandLineEdit.setEnabled(False)
+        else:
+            print "[OR2011_0320_2045]"
           

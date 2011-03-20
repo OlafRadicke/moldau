@@ -212,7 +212,6 @@ class MoldauMainWindow(QtGui.QMainWindow):
           print item
           self.listview.insertItem(count, item)
           count = count + 1
-        self.listview.insertItem(count, "ende")
         
         # ----------- Rigth Box -------------------
         
@@ -229,10 +228,19 @@ class MoldauMainWindow(QtGui.QMainWindow):
     # change sie Tasks-Setting-Configuration
     @pyqtSlot()
     def selctTasksSettingDialog(self):
-        print "selctTasksSettingDialog"
-        filename=QtGui.QFileDialog.getOpenFileName(self, "Change tasks-Setting-Configuration", self.moldauConf.getTasksSettingsFile(),"*.*")
+        filename = QtGui.QFileDialog.getOpenFileName(self, "Change tasks-Setting-Configuration", self.moldauConf.getTasksSettingsFile(),"*.*")
         print "filename: " + filename
-        self.moldauConf.setTasksSettingsFile(filename)
+        self.moldauConf.setTasksSettingsFile(str(filename))
+        self.tasksSettings.setConfFile(str(filename))
+        print "tasksSettings.configFile" , self.tasksSettings.configFile  
+        self.listview.clear ()
+        # refill item-List
+        count = 0
+        for item in self.tasksSettings.getStoryboard():
+          print item
+          self.listview.insertItem(count, item)
+          count = count + 1
+        
 
     ## A function with qt-slot. it's fill the TaskView with data. 
     @pyqtSlot()
