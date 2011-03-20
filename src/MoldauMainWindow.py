@@ -142,27 +142,6 @@ class MoldauMainWindow(QtGui.QMainWindow):
         bottomLayout.addWidget(self.textView)
 
 
-        textExample = "<b>Welt!</b> <br>"
-        textExample = textExample + "<table border=\"1\">"
-        textExample = textExample +  "  <tr>"
-        textExample = textExample +  "    <th>Berlin</th>"
-        textExample = textExample +  "    <th>Hamburg</th>"
-        textExample = textExample +  "    <th>M&uuml;nchen</th>"
-        textExample = textExample +  "  </tr>"
-        textExample = textExample +  "  <tr>"
-        textExample = textExample +  "    <td>Milj&ouml;h</td>"
-        textExample = textExample +  "    <td>Kiez</td>"
-        textExample = textExample +  "    <td>Bierdampf</td>"
-        textExample = textExample +  "  </tr>"
-        textExample = textExample +  "  <tr>"
-        textExample = textExample +  "    <td>Buletten</td>"
-        textExample = textExample +  "    <td>Frikadellen</td>"
-        textExample = textExample +  "    <td>Fleischpflanzerl</td>"
-        textExample = textExample +  "  </tr>"
-        self.minutes = textExample +  "</table>"
-
-        self.textView.setHtml(self.minutes)
-
         # Button bar
         hLayoutButtonBar = QtGui.QHBoxLayout()
         bottomLayout.addLayout(hLayoutButtonBar)
@@ -177,6 +156,7 @@ class MoldauMainWindow(QtGui.QMainWindow):
 
         # VBox left with GrouBox-frame
         listBox = QtGui.QGroupBox("Stap list")
+        listBox.setMaximumWidth(250)
         vListLayoutL = QtGui.QVBoxLayout()
         listBox.setLayout(vListLayoutL)
         hMainLayout.addWidget(listBox)
@@ -223,6 +203,9 @@ class MoldauMainWindow(QtGui.QMainWindow):
         # Statusbar
         self.statusBar().showMessage('Ready')
 
+        ## @todo Only for demo!
+        self.minutesExsample()
+
 
     ## A function with qt-slot. it's open a File-Dialog. for
     # change sie Tasks-Setting-Configuration
@@ -262,3 +245,38 @@ class MoldauMainWindow(QtGui.QMainWindow):
         print "clearMinutes..."
         self.minutes = ""
         self.textView.setHtml(self.minutes)
+
+    def minutesExsample(self):
+
+        textExample =  "<table border=\"1\">"
+        textExample = textExample +  "  <tr>"
+        textExample = textExample +  "    <th><b>Timestamp</b></th>"
+        textExample = textExample +  "    <th><b>Task-Name</b></th>"
+        textExample = textExample +  "    <th><b>Task-Typ</b></th>"
+        textExample = textExample +  "    <th><b>Task-Do</b></th>"
+        textExample = textExample +  "    <th><b>Task-Result</b></th>"
+        textExample = textExample +  "  </tr>"
+        textExample = textExample +  "  <tr>"
+        textExample = textExample +  "    <td>2011-03-20-21:43</td>"
+        textExample = textExample +  "    <td>Task_01</td>"
+        textExample = textExample +  "    <td>bash_command</td>"
+        textExample = textExample +  "    <td>mkdir ./test-dir</td>"
+        textExample = textExample +  "    <td>okay</td>"
+        textExample = textExample +  "  </tr>"
+        textExample = textExample +  "  <tr>"
+        textExample = textExample +  "    <td>2011-03-20-21:44</td>"
+        textExample = textExample +  "    <td>Task_02</td>"
+        textExample = textExample +  "    <td>bash_command</td>"
+        textExample = textExample +  "    <td>rm ./testdata-2.txt</td>"
+        textExample = textExample +  "    <td>rm: cannot remove `./testdata-2.txt': No such file or directory</td>"
+        textExample = textExample +  "  </tr>"
+        textExample = textExample +  "  <tr>"
+        textExample = textExample +  "    <td>2011-03-20-21:46</td>"
+        textExample = textExample +  "    <td>Task_03</td>"
+        textExample = textExample +  "    <td>bash_command</td>"
+        textExample = textExample +  "    <td>cd ./testdata-2.txt</td>"
+        textExample = textExample +  "    <td>bash: cd: ./testdata-2.txt: No such file or directory</td>"
+        textExample = textExample +  "  </tr>"
+        self.minutes = textExample +  "</table>"
+
+        self.textView.setHtml(self.minutes)      

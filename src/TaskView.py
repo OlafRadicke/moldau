@@ -36,6 +36,10 @@ from TasksSettings import TasksSettings
 class TaskView(QtGui.QGroupBox):
 
 
+    ## Frame style
+    owneFramStyleSheet = "QGroupBox{border:2px solid gray;border-radius:7px;margin-top: 1ex;} \
+    QGroupBox::title{subcontrol-origin: margin;subcontrol-position:top center;padding:0 3px;} "
+
     ## Typ:.MoldauConf.  configuraton of this applikation.
     moldauConf   = MoldauConf()
     
@@ -78,7 +82,7 @@ class TaskView(QtGui.QGroupBox):
         # VBox Right with GrouBox-frame
 #        taskBox = QtGui.QGroupBox("Stap details")
         self.setTitle("Stap details")
-        self.setFlat(False)
+        self.setStyleSheet(self.owneFramStyleSheet)
         vListLayoutR = QtGui.QVBoxLayout()
         self.setLayout(vListLayoutR)
 #        hMainLayout.addWidget(taskBox)
