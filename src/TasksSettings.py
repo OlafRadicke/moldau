@@ -140,9 +140,9 @@ class TasksSettings:
     # @return get the typ of a todo.
     def getTodoTyp(self, todo):
         try:
-            conf_value  = self.config.get(todo, "stap_typ")
+            conf_value  = self.config.get(str(todo), "stap_typ")
         except:
-            print "[OR2011]"
+            print "[OR20110320_2021_01]"
             conf_value  = "bash_command"
         return conf_value
 
@@ -151,9 +151,9 @@ class TasksSettings:
     # @return get the command of a bash comand todo.
     def getTodoCommand(self, todo):
         try:
-            conf_value  = self.config.get(todo, "commant")
+            conf_value  = self.config.get(str(todo), "commant")
         except:
-            print "[OR2011]"
+            print "[OR20110320_2021_02]"
             conf_value  = ""
         return conf_value
 
@@ -162,9 +162,9 @@ class TasksSettings:
     # @return return the file name which we would like remove.
     def getOldFile(self, todo):
         try:
-            conf_value  = self.config.get(todo, "old_file")
+            conf_value  = self.config.get(str(todo), "old_file")
         except:
-            print "[OR2011]"
+            print "[OR20110320_2021_03]"
             conf_value  = ""
         return conf_value
 
@@ -173,9 +173,9 @@ class TasksSettings:
     # @return return the file name which we over write the old file.
     def getNewFile(self, todo):
         try:
-            conf_value  = self.config.get(todo, "new_file")
+            conf_value  = self.config.get(str(todo), "new_file")
         except:
-            print "[OR2011]"
+            print "[OR20110320_2021_04]"
             conf_value  = ""
         return conf_value
 
@@ -184,9 +184,9 @@ class TasksSettings:
     # @return return the description of a stap.
     def getDescription(self, todo):
         try:
-            conf_value  = self.config.get(todo, "description")
+            conf_value  = self.config.get(str(todo), "description")
         except:
-            print "[OR2011]"
+            print "[OR20110320_2021_05]"
             conf_value  = ""
         return conf_value
 
@@ -197,9 +197,9 @@ class TasksSettings:
     # Else return "False".
     def isStopBeforeDo(self, todo):
         try:
-            conf_value  = self.config.get(todo, "stop_before_do")
+            conf_value  = self.config.get(str(todo), "stop_before_do")
         except:
-            print "[OR2011]"
+            print "[OR20110320_2021_06]"
             conf_value  = "False"
         return conf_value
 
@@ -208,20 +208,10 @@ class TasksSettings:
     # @return return "True" if stop by stap after do the task.
     # Else return "False".
     def isStopAfterDo(self, todo):
-        print self.configFile
-        print "todo: '" + todo + "'\n"
-        if (todo.toAscii() == "stap_020"):
-            print "gleich!"
-        # parsing QString -> ascii
-        todo = str(todo)
-        print "---Storyboard:", self.getStoryboard()
-        conf_value  = self.config.get("stap_020", "stop_after_do")
-        conf_value  = self.config.get(todo, "stop_after_do")
-        print "---Storyboard:", self.getStoryboard()
         try:
-            conf_value  = self.config.get(todo, "stop_after_do")
+            conf_value  = self.config.get(str(todo), "stop_after_do")
         except:
-            print "[OR2011]"
+            print "[OR20110320_2021_07]"
             conf_value  =  "False"
         return conf_value
         
@@ -231,9 +221,9 @@ class TasksSettings:
     # Else return "False".
     def isSkipStap(self, todo):
         try:
-            conf_value  = self.config.get(todo, "skip_stap")
+            conf_value  = self.config.get(str(todo), "skip_stap")
         except:
-            print "[OR2011]"
+            print "[OR20110320_2021_06]"
             conf_value  =  "False"
         return conf_value
     
