@@ -76,6 +76,9 @@ class TaskView(QtGui.QGroupBox):
     ## Skip this task if set "True"
     skipCheckBox = ""
 
+
+    taskIsChange = QtCore.pyqtSignal()
+
     ## Constructor
     def __init__(self):
         QtGui.QGroupBox.__init__(self)
@@ -83,12 +86,10 @@ class TaskView(QtGui.QGroupBox):
 
         # ----------- Rigth Box -------------------
         # VBox Right with GrouBox-frame
-#        taskBox = QtGui.QGroupBox("Stap details")
         self.setTitle("Stap details")
         self.setStyleSheet(self.owneFramStyleSheet)
         vListLayoutR = QtGui.QVBoxLayout()
         self.setLayout(vListLayoutR)
-#        hMainLayout.addWidget(taskBox)
 
         # Task name
         hLayoutName = QtGui.QHBoxLayout()
@@ -191,7 +192,9 @@ class TaskView(QtGui.QGroupBox):
         self.connect(safePushButton, QtCore.SIGNAL('clicked()'), QtCore.SLOT('safeTaskChanges()'))
         hLayoutButtonBar.addWidget(safePushButton)
 
-
+    ## @return Get TasksSetting-Object
+    def getTasksSettings():
+        return self.tasksSettings
 
     ## Set configuraton of this applikation.
     def setMoldauConf(self, conf):
@@ -258,38 +261,17 @@ class TaskView(QtGui.QGroupBox):
         taskTyp = TaskTyp()
         taskTyp.ID = str(self.nameLineEdit.text())
         taskTyp.Depiction = str(self.descriptionLineEdit.text())
+        taskTyp.TodoTyp = str(self.todoTypComboBox.currentText())
+        taskTyp.BashCommand = str(self.bashCommandLineEdit.text())
+        taskTyp.OldFile = str(self.originalFileLineEdit.text())
+        taskTyp.NewFile = str(self.replacementFileLineEdit.text())
+        taskTyp.StopBefore = str(self.beforeCheckBox.isChecked())
+        taskTyp.StopAfter = str(self.afterCheckBox.isChecked())
+        taskTyp.SkipStap = str(self.skipCheckBox.isChecked())
 
-        #item_index = self.todoTypComboBox.findText(task.TodoTyp)
-        #if (item_index == -1):
-            #self.todoTypComboBox.addItem(task.TodoTyp)
-        #else:
-            #self.todoTypComboBox.setCurrentIndex(item_index)
-
-        #self.bashCommandLineEdit.setText(task.BashCommand)
-        #self.originalFileLineEdit.setText(task.OldFile)
-        #self.replacementFileLineEdit.setText(task.NewFile)
-
-        #if (task.StopBefore == "False"):
-            #self.beforeCheckBox.setChecked(False)
-        #else:
-            #self.beforeCheckBox.setChecked(True)
-
-        #if (task.StopAfter == "False"):
-            #self.afterCheckBox.setChecked(False)
-        #else:
-            #self.afterCheckBox.setChecked(True)
-
-        #if (task.SkipStap == "False"):
-            #self.skipCheckBox.setChecked(False)
-        #else:
-            #self.skipCheckBox.setChecked(True)
-
-        #index_text = self.todoTypComboBox.currentText()
-        #self.todoTypComboBoxChange(index_text)
         self.tasksSettings.setTaskTyp(taskTyp)
+        self.taskIsChange.emit()
 
-        # Class Signal 
-        taskIsChange = pyqtSignal()
 
 
     ## Safe the task changes.

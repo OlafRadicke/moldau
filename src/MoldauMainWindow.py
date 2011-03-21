@@ -187,11 +187,12 @@ class MoldauMainWindow(QtGui.QMainWindow):
         vListLayoutL.addWidget(self.listview)
         self.connect(self.listview, QtCore.SIGNAL('itemSelectionChanged()'), QtCore.SLOT('fillTaskView()'))
         ## Item-List
-        count = 0
-        for item in self.tasksSettings.getStoryboard():
-          print item
-          self.listview.insertItem(count, item)
-          count = count + 1
+        self.refreshTaskList()
+        #count = 0
+        #for item in self.tasksSettings.getStoryboard():
+          #print item
+          #self.listview.insertItem(count, item)
+          #count = count + 1
         
         # ----------- Rigth Box -------------------
         
@@ -199,6 +200,7 @@ class MoldauMainWindow(QtGui.QMainWindow):
         hMainLayout.addWidget(self.taskBox)
         self.taskBox.setMoldauConf(self.moldauConf)
         self.taskBox.setTasksSettings(self.tasksSettings)
+        self.connect(self.taskBox , QtCore.SIGNAL('taskIsChange()'), QtCore.SLOT('refreshTaskList()'))
 
         # Statusbar
         self.statusBar().showMessage('Ready')
@@ -224,6 +226,19 @@ class MoldauMainWindow(QtGui.QMainWindow):
           self.listview.insertItem(count, item)
           count = count + 1
         
+    ## Refrash the list of tasks.
+    @pyqtSlot()
+    def refreshTaskList(self):
+        #print "refrash..."
+        #print "self.moldauConf.getTasksSettingsFile():",self.moldauConf.getTasksSettingsFile()
+        #self.tasksSettings = tasksSettings = TasksSettings(self.moldauConf.getTasksSettingsFile())
+        self.tasksSettings.reLoad()
+        self.listview.clear ()
+        count = 0
+        for item in self.tasksSettings.getStoryboard():
+          print item
+          self.listview.insertItem(count, item)
+          count = count + 1
 
     ## A function with qt-slot. it's fill the TaskView with data. 
     @pyqtSlot()
