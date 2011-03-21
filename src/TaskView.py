@@ -76,7 +76,7 @@ class TaskView(QtGui.QGroupBox):
     ## Skip this task if set "True"
     skipCheckBox = ""
 
-
+    ## This signal is sent when the user safe data.
     taskIsChange = QtCore.pyqtSignal()
 
     ## Constructor
