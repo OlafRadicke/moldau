@@ -28,7 +28,7 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import pyqtSlot
 from MoldauConf import MoldauConf
 from TasksSettings import TasksSettings
-
+from TaskTyp import TaskTyp
 
 
 
@@ -45,6 +45,9 @@ class TaskView(QtGui.QGroupBox):
     
     ## Typ:.TasksSettings.  The setings  of taskts.
     tasksSettings = TasksSettings(moldauConf.getTasksSettingsFile())
+
+    ## TaskTyp
+    task = TaskTyp()
 
     ## Typ:.LineEdit.  QtGui.QLineEdit: Text fild for name of Task
     nameLineEdit = ""
@@ -181,9 +184,12 @@ class TaskView(QtGui.QGroupBox):
         hLayoutButtonBar = QtGui.QHBoxLayout()
         vListLayoutR.addLayout(hLayoutButtonBar)
         resetPushButton = QtGui.QPushButton("Reset")
+        self.connect(resetPushButton, QtCore.SIGNAL('clicked()'), QtCore.SLOT('resetTaskChanges()'))
         hLayoutButtonBar.addWidget(resetPushButton)
-        savePushButton = QtGui.QPushButton("Save")
-        hLayoutButtonBar.addWidget(savePushButton)
+        
+        safePushButton = QtGui.QPushButton("Safe")
+        self.connect(safePushButton, QtCore.SIGNAL('clicked()'), QtCore.SLOT('safeTaskChanges()'))
+        hLayoutButtonBar.addWidget(safePushButton)
 
 
 
@@ -197,6 +203,7 @@ class TaskView(QtGui.QGroupBox):
 
     ## Set the task and show his data.
     def setTaskTyp(self, task):
+        self.task = task
         self.nameLineEdit.setText(task.ID)
         self.descriptionLineEdit.setText(task.Depiction)
 
@@ -241,4 +248,53 @@ class TaskView(QtGui.QGroupBox):
             self.bashCommandLineEdit.setEnabled(False)
         else:
             print "[OR2011_0320_2045]"
+
+
+    ## Safe the task changes.
+    @pyqtSlot()
+    def safeTaskChanges(self):
+        print "safeTaskChanges"
+
+        taskTyp = TaskTyp()
+        taskTyp.ID = str(self.nameLineEdit.text())
+        taskTyp.Depiction = str(self.descriptionLineEdit.text())
+
+        #item_index = self.todoTypComboBox.findText(task.TodoTyp)
+        #if (item_index == -1):
+            #self.todoTypComboBox.addItem(task.TodoTyp)
+        #else:
+            #self.todoTypComboBox.setCurrentIndex(item_index)
+
+        #self.bashCommandLineEdit.setText(task.BashCommand)
+        #self.originalFileLineEdit.setText(task.OldFile)
+        #self.replacementFileLineEdit.setText(task.NewFile)
+
+        #if (task.StopBefore == "False"):
+            #self.beforeCheckBox.setChecked(False)
+        #else:
+            #self.beforeCheckBox.setChecked(True)
+
+        #if (task.StopAfter == "False"):
+            #self.afterCheckBox.setChecked(False)
+        #else:
+            #self.afterCheckBox.setChecked(True)
+
+        #if (task.SkipStap == "False"):
+            #self.skipCheckBox.setChecked(False)
+        #else:
+            #self.skipCheckBox.setChecked(True)
+
+        #index_text = self.todoTypComboBox.currentText()
+        #self.todoTypComboBoxChange(index_text)
+        self.tasksSettings.setTaskTyp(taskTyp)
+
+        # Class Signal 
+        taskIsChange = pyqtSignal()
+
+
+    ## Safe the task changes.
+    @pyqtSlot()
+    def resetTaskChanges(self):
+        self.setTaskTyp(self.task)
+           
           

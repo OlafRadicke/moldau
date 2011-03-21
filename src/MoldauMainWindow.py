@@ -79,8 +79,8 @@ class MoldauMainWindow(QtGui.QMainWindow):
 
         menubar = self.menuBar()
         menuFile = menubar.addMenu('&File')
-        menuFile.addAction(menuExit)
         menuFile.addAction(menuTasksSetting)
+        menuFile.addAction(menuExit)
 
         # ------------- menu end ------------
 
@@ -246,6 +246,9 @@ class MoldauMainWindow(QtGui.QMainWindow):
         self.minutes = ""
         self.textView.setHtml(self.minutes)
 
+
+
+    ## Only a fake-output, as exsample. 
     def minutesExsample(self):
 
         textExample =  "<table border=\"1\">"

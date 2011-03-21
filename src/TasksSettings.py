@@ -230,4 +230,41 @@ class TasksSettings:
             print "[OR20110320_2021_06]"
             conf_value  =  "False"
         return conf_value
-    
+
+
+# ========= set-functions ================
+
+
+        self.config.set("stap_010", "stap_typ", "replacement")
+        self.config.set("stap_010", "commant", "")
+        self.config.set("stap_010", "old_file", "~/var/oldfile.txt")
+        self.config.set("stap_010", "new_file", "~/var/newfile.txt")
+        self.config.set("stap_010", "description", "write a comment.")
+        self.config.set("stap_010", "stop_before_do", "False")
+        self.config.set("stap_010", "stop_after_do", "True")
+        self.config.set("stap_010", "skip_stap", "False")
+
+    ##  Sat and safing a task-class.
+    # @param taskTyp Ths task-class is safing.
+    def setTaskTyp(self, taskTyp):
+        # taskTyp.Depiction = self.getDescription(todo)
+        self.config.set(taskTyp.ID, "description", taskTyp.Depiction)
+        # taskTyp.TodoTyp = self.getTodoTyp(todo)
+        self.config.set(str(taskTyp.ID), "stap_typ", str(taskTyp.TodoTyp))
+        # taskTyp.BashCommand = self.getTodoCommand(todo)
+        self.config.set(str(taskTyp.ID), "commant", str(taskTyp.BashCommand))
+        #taskTyp.OldFile = self.getOldFile(todo)
+        self.config.set(str(taskTyp.ID), "old_file", str(taskTyp.OldFile))
+        # taskTyp.NewFile  = self.getNewFile(todo)
+        self.config.set(str(taskTyp.ID), "new_file", str(taskTyp.NewFile))
+        # taskTyp.StopBefore = self.isStopBeforeDo(todo)
+        self.config.set(str(taskTyp.ID), "stop_before_do", str(taskTyp.StopBefore))
+        # taskTyp.StopAfter = self.isStopAfterDo(todo)
+        self.config.set(str(taskTyp.ID), "stop_after_do", str(taskTyp.StopAfter))
+        # taskTyp.SkipStap = self.isSkipStap(todo)
+        self.config.set(str(taskTyp.ID), "skip_stap", str(taskTyp.SkipStap))
+
+        self.config.write(sys.stdout)
+        output = open(self.configFile,'w')
+        self.config.write(output)
+        print "schreibe in: ", self.configFile        
