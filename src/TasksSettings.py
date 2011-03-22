@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
  ###########################################################################
- #   Copyright (C) 2010 by ATIX AG                                         #
+ #   Copyright (C) 2010 by ATIX AG, Olaf Radicke                           #
  #                                                                         #
  #   This program is free software; you can redistribute it and/or modify  #
  #   it under the terms of the GNU General Public License as published by  #
@@ -18,8 +18,12 @@
  #   along with this program; if not, see                                  #
  #   http:#www.gnu.org/licenses/gpl.txt                                    #
  #                                                                         #
- #   Olaf Radicke <radicke@atix.de>                                        #
  ###########################################################################
+
+#http://docs.python.org/library/configparser.html#ConfigParser.ConfigParser
+#.items(section)
+#.remove_section(section)
+
 
 import ConfigParser
 from PyQt4 import QtGui, QtCore
@@ -28,7 +32,7 @@ import sys
 import os.path
 from TaskTyp import TaskTyp
 
-## @file zsettings.py
+## @file TaskSettings.py
 # @author Olaf Radicke<radicke@atix.de>
 
 ## Class for aplication settings

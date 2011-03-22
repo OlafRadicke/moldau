@@ -3,7 +3,7 @@
 
 
  ###########################################################################
- #   Copyright (C) 2010 by ATIX AG                                         #
+ #   Copyright (C) 2010 by ATIX AG, Olaf Radicke                           #
  #                                                                         #
  #   This program is free software; you can redistribute it and/or modify  #
  #   it under the terms of the GNU General Public License as published by  #
@@ -19,7 +19,6 @@
  #   along with this program; if not, see                                  #
  #   http:#www.gnu.org/licenses/gpl.txt                                    #
  #                                                                         #
- #   Olaf Radicke <radicke@atix.de>                                        #
  ###########################################################################
 
 import sys
@@ -31,7 +30,8 @@ from TasksSettings import TasksSettings
 from TaskView import TaskView
 from TaskTyp import TaskTyp
 
-
+## @file TaskTyp.py
+# @author Olaf Radicke<briefkasten@olaf-radicke.de>
 
 ## The main window of the GUI
 class MoldauMainWindow(QtGui.QMainWindow):
