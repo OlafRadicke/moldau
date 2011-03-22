@@ -265,7 +265,6 @@ class TasksSettings:
         self.setTaskTyp(taskTyp)
         taskList = self.getStoryboard()
         taskList.append(str(taskTyp.ID))
-        print "[debug] taskList: " , taskList
         self.setStoryboard(taskList)
         self.reLoad()
 
@@ -279,7 +278,6 @@ class TasksSettings:
             else:
                 string_list =  i
                 first = False
-        print "[debug] string_list: " , string_list
         self.config.set("storyboard", "staps", string_list)
         self.config.write(sys.stdout)
         output = open(self.configFile,'w')
