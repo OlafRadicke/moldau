@@ -200,9 +200,9 @@ class TaskView(QtGui.QGroupBox):
     def setMoldauConf(self, conf):
         self.moldauConf = conf
 
-    ## Set the setings  of taskts.
+    ## Set the setings of taskts.
     def setTasksSettings(self, setings):
-        tasksSettings = setings
+        self.tasksSettings = setings
 
     ## Set the task and show his data.
     def setTaskTyp(self, task):

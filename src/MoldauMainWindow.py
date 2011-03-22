@@ -89,7 +89,7 @@ class MoldauMainWindow(QtGui.QMainWindow):
         
         toolNew = QtGui.QAction(QtGui.QIcon('icons/new.png'), 'New task', self)
         toolNew.setShortcut('Ctrl+N')
-#       self.connect(toolNew, QtCore.SIGNAL('triggered()'), QtCore.SLOT('close()'))
+        self.connect(toolNew, QtCore.SIGNAL('triggered()'), QtCore.SLOT('newTasksDialog()'))
         self.toolbar.addAction(toolNew)
 
         toolRemove = QtGui.QAction(QtGui.QIcon('icons/remove.png'), 'Delete task', self)
@@ -162,21 +162,6 @@ class MoldauMainWindow(QtGui.QMainWindow):
         hMainLayout.addWidget(listBox)
         
 
-        # -------------- Tree ----------------
-        ### create left list
-        #listview = QtGui.QTreeWidget()
-        
-        ### Header
-        #listview.setHeaderLabel("Task")
-        #vListLayoutL.addWidget(listview)
-
-
-        ### Item-List
-        #for item in self.tasksSettings.getStoryboard():
-          #print item
-          #listview.addTopLevelItem(QtGui.QTreeWidgetItem(item))
-          #listview.addTopLevelItem(QtGui.QTreeWidgetItem("TEST-01"))
-
         # -------------- List --------------
 
         # Label
@@ -206,9 +191,24 @@ class MoldauMainWindow(QtGui.QMainWindow):
         self.statusBar().showMessage('Ready')
 
         ## @todo Only for demo!
-        self.minutesExsample()
+        self.__minutesExsample()
 
-
+    ## A function with qt-slot. it's creade a new task.
+    @pyqtSlot()
+    def newTasksDialog(self):
+        text, ok = QtGui.QInputDialog.getText(self, "New Task", "Task name:", 0)
+        
+        if ok != True :
+          print "if: " , text, ok
+          return
+        else:
+          print "else: " , text, ok
+          taskTyp = TaskTyp()
+          taskTyp.ID = text
+          self.tasksSettings.addTaskTyp(taskTyp)
+          self.refreshTaskList()
+          self.taskBox.setTasksSettings(self.tasksSettings)
+      
     ## A function with qt-slot. it's open a File-Dialog. for
     # change sie Tasks-Setting-Configuration
     @pyqtSlot()
@@ -229,9 +229,6 @@ class MoldauMainWindow(QtGui.QMainWindow):
     ## Refrash the list of tasks.
     @pyqtSlot()
     def refreshTaskList(self):
-        #print "refrash..."
-        #print "self.moldauConf.getTasksSettingsFile():",self.moldauConf.getTasksSettingsFile()
-        #self.tasksSettings = tasksSettings = TasksSettings(self.moldauConf.getTasksSettingsFile())
         self.tasksSettings.reLoad()
         self.listview.clear ()
         count = 0
@@ -264,7 +261,7 @@ class MoldauMainWindow(QtGui.QMainWindow):
 
 
     ## Only a fake-output, as exsample. 
-    def minutesExsample(self):
+    def __minutesExsample(self):
 
         textExample =  "<table border=\"1\">"
         textExample = textExample +  "  <tr>"

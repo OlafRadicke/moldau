@@ -245,7 +245,7 @@ class TasksSettings:
     ##  Sat and safing a task-class.
     # @param taskTyp Ths task-class is safing.
     def setTaskTyp(self, taskTyp):
-        self.config.set(taskTyp.ID, "description", taskTyp.Depiction)
+        self.config.set(str(taskTyp.ID), "description", taskTyp.Depiction)
         self.config.set(str(taskTyp.ID), "stap_typ", str(taskTyp.TodoTyp))
         self.config.set(str(taskTyp.ID), "commant", str(taskTyp.BashCommand))
         self.config.set(str(taskTyp.ID), "old_file", str(taskTyp.OldFile))
@@ -257,4 +257,31 @@ class TasksSettings:
         self.config.write(sys.stdout)
         output = open(self.configFile,'w')
         self.config.write(output)
-        print "schreibe in: ", self.configFile        
+        print "schreibe in: ", self.configFile
+
+    ## Add a new task
+    def addTaskTyp(self, taskTyp):
+        self.config.add_section(str(taskTyp.ID))
+        self.setTaskTyp(taskTyp)
+        taskList = self.getStoryboard()
+        taskList.append(str(taskTyp.ID))
+        print "[debug] taskList: " , taskList
+        self.setStoryboard(taskList)
+        self.reLoad()
+
+    ## (re)write Storyboard
+    def setStoryboard(self, taskList):
+        string_list = ""
+        first = True
+        for i in taskList:
+            if first != True:
+                string_list = string_list + ";" + i
+            else:
+                string_list =  i
+                first = False
+        print "[debug] string_list: " , string_list
+        self.config.set("storyboard", "staps", string_list)
+        self.config.write(sys.stdout)
+        output = open(self.configFile,'w')
+        self.config.write(output)
+        
