@@ -43,6 +43,12 @@ class TasksSettings:
 #        self.config = ConfigParser.SafeConfigParser()
         self.config.read(self.configFile)
 
+    def __writFileNow(self):
+        self.config.write(sys.stdout)
+        output = open(self.configFile,'w')
+        self.config.write(output)
+        print "schreibe in: ", self.configFile
+
     ## generate a new config file with default and exsample values.
     def generateNewConfigFile(self):
         self.config.add_section("storyboard")
@@ -101,12 +107,6 @@ class TasksSettings:
                 else:
                     print(newFileName + "\n     ....NO FOUND")
 
-    def setConfFile(self, value):
-        self.configFile = value
-        self.config = ConfigParser.ConfigParser()
-        self.config.read(self.configFile)
-        print "Read: " , self.configFile
-        print "Storyboard: " , self.getStoryboard()
         
 # ========= get-functions ================
 
@@ -267,4 +267,24 @@ class TasksSettings:
         self.config.write(sys.stdout)
         output = open(self.configFile,'w')
         self.config.write(output)
-        print "schreibe in: ", self.configFile        
+        print "schreibe in: ", self.configFile
+
+
+    def setConfFile(self, value):
+        self.configFile = value
+        self.config = ConfigParser.ConfigParser()
+        self.config.read(self.configFile)
+        print "Read: " , self.configFile
+        print "Storyboard: " , self.getStoryboard()
+
+    ## Delete a TaskTyp
+    def deleteTask(self, taskTyp):
+        pass
+
+    ## Push taskt one step earlier in list.
+    def earlierInList(self, taskTyp):
+        pass
+
+    ## Push taskt one step later in list.
+    def laterInList(self, taskTyp):
+        pass
