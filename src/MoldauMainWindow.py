@@ -93,8 +93,8 @@ class MoldauMainWindow(QtGui.QMainWindow):
         self.toolbar.addAction(toolNew)
 
         toolRemove = QtGui.QAction(QtGui.QIcon('icons/remove.png'), 'Delete task', self)
-#        toolNew.setShortcut('Ctrl+R')
-#       self.connect(toolNew, QtCore.SIGNAL('triggered()'), QtCore.SLOT('close()'))
+        toolNew.setShortcut('Ctrl+X')
+        self.connect(toolRemove, QtCore.SIGNAL('triggered()'), QtCore.SLOT('deleteTask()'))
         self.toolbar.addAction(toolRemove)
 
         toolDown = QtGui.QAction(QtGui.QIcon('icons/down.png'), 'Move task down', self)
@@ -171,8 +171,7 @@ class MoldauMainWindow(QtGui.QMainWindow):
         self.listview = QtGui.QListWidget()
         vListLayoutL.addWidget(self.listview)
         self.connect(self.listview, QtCore.SIGNAL('itemSelectionChanged()'), QtCore.SLOT('fillTaskView()'))
-        ## Item-List
-        self.refreshTaskList()
+
         #count = 0
         #for item in self.tasksSettings.getStoryboard():
           #print item
@@ -189,6 +188,8 @@ class MoldauMainWindow(QtGui.QMainWindow):
 
         # Statusbar
         self.statusBar().showMessage('Ready')
+        # Item-List
+        self.refreshTaskList()
 
         ## @todo Only for demo!
         self.__minutesExsample()
@@ -197,7 +198,6 @@ class MoldauMainWindow(QtGui.QMainWindow):
     @pyqtSlot()
     def newTasksDialog(self):
         text, ok = QtGui.QInputDialog.getText(self, "New Task", "Task name:", 0)
-        
         if ok != True :
           print "if: " , text, ok
           return
@@ -222,20 +222,22 @@ class MoldauMainWindow(QtGui.QMainWindow):
         # refill item-List
         count = 0
         for item in self.tasksSettings.getStoryboard():
-          print item
-          self.listview.insertItem(count, item)
-          count = count + 1
+            print item
+            self.listview.insertItem(count, item)
+            count = count + 1
         
     ## Refrash the list of tasks.
     @pyqtSlot()
     def refreshTaskList(self):
         self.tasksSettings.reLoad()
+        self.taskBox.setTasksSettings(self.tasksSettings)
         self.listview.clear ()
         count = 0
         for item in self.tasksSettings.getStoryboard():
-          print item
-          self.listview.insertItem(count, item)
-          count = count + 1
+            print item
+            self.listview.insertItem(count, item)
+            count = count + 1
+
 
     ## A function with qt-slot. it's fill the TaskView with data. 
     @pyqtSlot()
@@ -258,7 +260,21 @@ class MoldauMainWindow(QtGui.QMainWindow):
         self.minutes = ""
         self.textView.setHtml(self.minutes)
 
+    ## Function delete a task
+    @pyqtSlot()
+    def deleteTask(self):
+        print "deleteTask"
+        todo = ""
+        for item in self.listview.selectedItems():
+            print  ".." , item.text()
+            todo = item.text()
 
+        if( todo == "" ):
+            self.statusBar().showMessage('No ToDo select...')
+        else:
+          taskTyp = self.tasksSettings.getTaskTyp(todo)
+          self.tasksSettings.deleteTask(taskTyp)
+          self.refreshTaskList()
 
     ## Only a fake-output, as exsample. 
     def __minutesExsample(self):

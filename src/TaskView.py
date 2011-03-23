@@ -274,7 +274,6 @@ class TaskView(QtGui.QGroupBox):
         self.taskIsChange.emit()
 
 
-
     ## Safe the task changes.
     @pyqtSlot()
     def resetTaskChanges(self):
