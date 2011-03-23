@@ -3,7 +3,7 @@
 
 
  ###########################################################################
- #   Copyright (C) 2010 by ATIX AG                                         #
+ #   Copyright (C) 2010 by ATIX AG, Olaf Radicke                           #
  #                                                                         #
  #   This program is free software; you can redistribute it and/or modify  #
  #   it under the terms of the GNU General Public License as published by  #
@@ -19,7 +19,6 @@
  #   along with this program; if not, see                                  #
  #   http:#www.gnu.org/licenses/gpl.txt                                    #
  #                                                                         #
- #   Olaf Radicke <radicke@atix.de>                                        #
  ###########################################################################
 
 import sys
@@ -31,6 +30,8 @@ from TasksSettings import TasksSettings
 from TaskTyp import TaskTyp
 
 
+## @file TaskView.py
+# @author Olaf Radicke<briefkasten@olaf-radicke.de>
 
 ## This Widget view the data of a task
 class TaskView(QtGui.QGroupBox):
@@ -76,6 +77,9 @@ class TaskView(QtGui.QGroupBox):
     ## Skip this task if set "True"
     skipCheckBox = ""
 
+    ## This signal is sent when the user safe data.
+    taskIsChange = QtCore.pyqtSignal()
+
     ## Constructor
     def __init__(self):
         QtGui.QGroupBox.__init__(self)
@@ -83,12 +87,10 @@ class TaskView(QtGui.QGroupBox):
 
         # ----------- Rigth Box -------------------
         # VBox Right with GrouBox-frame
-#        taskBox = QtGui.QGroupBox("Stap details")
         self.setTitle("Stap details")
         self.setStyleSheet(self.owneFramStyleSheet)
         vListLayoutR = QtGui.QVBoxLayout()
         self.setLayout(vListLayoutR)
-#        hMainLayout.addWidget(taskBox)
 
         # Task name
         hLayoutName = QtGui.QHBoxLayout()
@@ -191,15 +193,17 @@ class TaskView(QtGui.QGroupBox):
         self.connect(safePushButton, QtCore.SIGNAL('clicked()'), QtCore.SLOT('safeTaskChanges()'))
         hLayoutButtonBar.addWidget(safePushButton)
 
-
+    ## @return Get TasksSetting-Object
+    def getTasksSettings():
+        return self.tasksSettings
 
     ## Set configuraton of this applikation.
     def setMoldauConf(self, conf):
         self.moldauConf = conf
 
-    ## Set the setings  of taskts.
+    ## Set the setings of taskts.
     def setTasksSettings(self, setings):
-        tasksSettings = setings
+        self.tasksSettings = setings
 
     ## Set the task and show his data.
     def setTaskTyp(self, task):
@@ -258,38 +262,17 @@ class TaskView(QtGui.QGroupBox):
         taskTyp = TaskTyp()
         taskTyp.ID = str(self.nameLineEdit.text())
         taskTyp.Depiction = str(self.descriptionLineEdit.text())
+        taskTyp.TodoTyp = str(self.todoTypComboBox.currentText())
+        taskTyp.BashCommand = str(self.bashCommandLineEdit.text())
+        taskTyp.OldFile = str(self.originalFileLineEdit.text())
+        taskTyp.NewFile = str(self.replacementFileLineEdit.text())
+        taskTyp.StopBefore = str(self.beforeCheckBox.isChecked())
+        taskTyp.StopAfter = str(self.afterCheckBox.isChecked())
+        taskTyp.SkipStap = str(self.skipCheckBox.isChecked())
 
-        #item_index = self.todoTypComboBox.findText(task.TodoTyp)
-        #if (item_index == -1):
-            #self.todoTypComboBox.addItem(task.TodoTyp)
-        #else:
-            #self.todoTypComboBox.setCurrentIndex(item_index)
-
-        #self.bashCommandLineEdit.setText(task.BashCommand)
-        #self.originalFileLineEdit.setText(task.OldFile)
-        #self.replacementFileLineEdit.setText(task.NewFile)
-
-        #if (task.StopBefore == "False"):
-            #self.beforeCheckBox.setChecked(False)
-        #else:
-            #self.beforeCheckBox.setChecked(True)
-
-        #if (task.StopAfter == "False"):
-            #self.afterCheckBox.setChecked(False)
-        #else:
-            #self.afterCheckBox.setChecked(True)
-
-        #if (task.SkipStap == "False"):
-            #self.skipCheckBox.setChecked(False)
-        #else:
-            #self.skipCheckBox.setChecked(True)
-
-        #index_text = self.todoTypComboBox.currentText()
-        #self.todoTypComboBoxChange(index_text)
         self.tasksSettings.setTaskTyp(taskTyp)
+        self.taskIsChange.emit()
 
-        # Class Signal 
-        taskIsChange = pyqtSignal()
 
 
     ## Safe the task changes.

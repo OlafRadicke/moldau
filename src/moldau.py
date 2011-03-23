@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
  ###########################################################################
- #   Copyright (C) 2010 by ATIX AG                                         #
+ #   Copyright (C) 2010 by ATIX AG, Olaf Radicke                           #
  #                                                                         #
  #   This program is free software; you can redistribute it and/or modify  #
  #   it under the terms of the GNU General Public License as published by  #
@@ -18,9 +18,7 @@
  #   along with this program; if not, see                                  #
  #   http:#www.gnu.org/licenses/gpl.txt                                    #
  #                                                                         #
- #   Olaf Radicke <radicke@atix.de>                                        #
  ###########################################################################
-
 
 import sys
 import os.path
