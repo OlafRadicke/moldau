@@ -295,12 +295,12 @@ class TasksSettings:
         allTask = self.getStoryboard()
         index = allTask.index(str(taskTyp.ID))
         newIndex = index + 1
-        if allTask.count() < newIndex:
+        if allTask.count < newIndex:
             return
         allTask.pop(index)
         allTask.insert(newIndex, str(taskTyp.ID))
         self.setStoryboard(allTask)
-        __writFileNow()
+        self.__writFileNow()
 
     ## Add a new task
     def addTaskTyp(self, taskTyp):

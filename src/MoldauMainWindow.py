@@ -98,8 +98,8 @@ class MoldauMainWindow(QtGui.QMainWindow):
         self.toolbar.addAction(toolRemove)
 
         toolDown = QtGui.QAction(QtGui.QIcon('icons/down.png'), 'Move task down', self)
-#        toolNew.setShortcut('Ctrl+R')
-#       self.connect(toolNew, QtCore.SIGNAL('triggered()'), QtCore.SLOT('close()'))
+        toolNew.setShortcut('Ctrl+D')
+        self.connect(toolDown, QtCore.SIGNAL('triggered()'), QtCore.SLOT('laterInList()'))
         self.toolbar.addAction(toolDown)
 
         toolUp = QtGui.QAction(QtGui.QIcon('icons/up.png'), 'Move task up', self)
@@ -263,7 +263,7 @@ class MoldauMainWindow(QtGui.QMainWindow):
     ## Function delete a task
     @pyqtSlot()
     def deleteTask(self):
-        print "deleteTask"
+        print "[debug] deleteTask"
         todo = ""
         for item in self.listview.selectedItems():
             print  ".." , item.text()
@@ -275,6 +275,31 @@ class MoldauMainWindow(QtGui.QMainWindow):
           taskTyp = self.tasksSettings.getTaskTyp(todo)
           self.tasksSettings.deleteTask(taskTyp)
           self.refreshTaskList()
+          
+    ## Function / slot set a task on a later place in list.
+    @pyqtSlot()
+    def laterInList(self):
+        print "[debug] laterInList"
+        todo = ""
+        listWidgetItem = QtGui.QListWidgetItem()
+        for item in self.listview.selectedItems():
+            print  ".." , item.text()
+            todo = item.text()
+            listWidgetItem
+
+        if( todo == "" ):
+            self.statusBar().showMessage('No ToDo select...')
+        else:
+          taskTyp = self.tasksSettings.getTaskTyp(todo)
+          self.tasksSettings.laterInList(taskTyp)
+          self.refreshTaskList()
+
+          # set select focus
+          foundItems = self.listview.findItems(todo, QtCore.Qt.MatchExactly)
+          if foundItems > 0:
+              index = self.listview.row(foundItems[0])
+              self.listview.setCurrentRow(index, QtGui.QItemSelectionModel.ToggleCurrent)
+        
 
     ## Only a fake-output, as exsample. 
     def __minutesExsample(self):
