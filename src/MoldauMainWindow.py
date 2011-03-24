@@ -103,8 +103,8 @@ class MoldauMainWindow(QtGui.QMainWindow):
         self.toolbar.addAction(toolDown)
 
         toolUp = QtGui.QAction(QtGui.QIcon('icons/up.png'), 'Move task up', self)
-#        toolNew.setShortcut('Ctrl+R')
-#       self.connect(toolNew, QtCore.SIGNAL('triggered()'), QtCore.SLOT('close()'))
+        toolNew.setShortcut('Ctrl+U')
+        self.connect(toolUp, QtCore.SIGNAL('triggered()'), QtCore.SLOT('earlierInList()'))
         self.toolbar.addAction(toolUp)
 
         toolRun = QtGui.QAction(QtGui.QIcon('icons/run.png'), 'Run task list', self)
@@ -199,10 +199,10 @@ class MoldauMainWindow(QtGui.QMainWindow):
     def newTasksDialog(self):
         text, ok = QtGui.QInputDialog.getText(self, "New Task", "Task name:", 0)
         if ok != True :
-          print "if: " , text, ok
+          print "[debug] if: " , text, ok
           return
         else:
-          print "else: " , text, ok
+          print "[debug] else: " , text, ok
           taskTyp = TaskTyp()
           taskTyp.ID = text
           self.tasksSettings.addTaskTyp(taskTyp)
@@ -214,10 +214,10 @@ class MoldauMainWindow(QtGui.QMainWindow):
     @pyqtSlot()
     def selctTasksSettingDialog(self):
         filename = QtGui.QFileDialog.getOpenFileName(self, "Change tasks-Setting-Configuration", self.moldauConf.getTasksSettingsFile(),"*.*")
-        print "filename: " + filename
+        self.statusBar().showMessage(str("try open task setting file: " + filename))
         self.moldauConf.setTasksSettingsFile(str(filename))
         self.tasksSettings.setConfFile(str(filename))
-        print "tasksSettings.configFile" , self.tasksSettings.configFile  
+        print "[debug] tasksSettings.configFile" , self.tasksSettings.configFile  
         self.listview.clear ()
         # refill item-List
         count = 0
@@ -234,7 +234,7 @@ class MoldauMainWindow(QtGui.QMainWindow):
         self.listview.clear ()
         count = 0
         for item in self.tasksSettings.getStoryboard():
-            print item
+            print "[debug] ", item
             self.listview.insertItem(count, item)
             count = count + 1
 
@@ -244,7 +244,7 @@ class MoldauMainWindow(QtGui.QMainWindow):
     def fillTaskView(self):
         todo = ""
         for item in self.listview.selectedItems():
-            print  ".." , item.text()
+            print  "[debug] .." , item.text()
             todo = item.text()
 
         if( todo == "" ):
@@ -256,7 +256,7 @@ class MoldauMainWindow(QtGui.QMainWindow):
     ## Function clear the minutes in the textView
     @pyqtSlot()
     def clearMinutes(self):
-        print "clearMinutes..."
+        print "[debug] clearMinutes..."
         self.minutes = ""
         self.textView.setHtml(self.minutes)
 
@@ -275,17 +275,42 @@ class MoldauMainWindow(QtGui.QMainWindow):
           taskTyp = self.tasksSettings.getTaskTyp(todo)
           self.tasksSettings.deleteTask(taskTyp)
           self.refreshTaskList()
-          
+
+
+    ## Function / slot set a task on a later place in list.
+    @pyqtSlot()
+    def earlierInList(self):
+        print "[debug] earlierInList"
+        todo = ""
+#        listWidgetItem = QtGui.QListWidgetItem()
+        for item in self.listview.selectedItems():
+            print  "[debug] .." , item.text()
+            todo = item.text()
+#            listWidgetItem = item
+
+        if( todo == "" ):
+            self.statusBar().showMessage('No ToDo select...')
+        else:
+          taskTyp = self.tasksSettings.getTaskTyp(todo)
+          self.tasksSettings.earlierInList(taskTyp)
+          self.refreshTaskList()
+
+          # set select focus
+          foundItems = self.listview.findItems(todo, QtCore.Qt.MatchExactly)
+          if foundItems > 0:
+              index = self.listview.row(foundItems[0])
+              self.listview.setCurrentRow(index, QtGui.QItemSelectionModel.ToggleCurrent)
+                  
     ## Function / slot set a task on a later place in list.
     @pyqtSlot()
     def laterInList(self):
         print "[debug] laterInList"
         todo = ""
-        listWidgetItem = QtGui.QListWidgetItem()
+#        listWidgetItem = QtGui.QListWidgetItem()
         for item in self.listview.selectedItems():
             print  ".." , item.text()
             todo = item.text()
-            listWidgetItem
+#            listWidgetItem = item
 
         if( todo == "" ):
             self.statusBar().showMessage('No ToDo select...')

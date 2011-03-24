@@ -288,7 +288,16 @@ class TasksSettings:
 
     ## Push taskt one step earlier in list.
     def earlierInList(self, taskTyp):
-        pass
+        allTask = self.getStoryboard()
+        index = allTask.index(str(taskTyp.ID))
+        newIndex = index - 1
+        if allTask.count < newIndex:
+            return
+        allTask.pop(index)
+        allTask.insert(newIndex, str(taskTyp.ID))
+        self.setStoryboard(allTask)
+        self.__writFileNow()
+        
 
     ## Push taskt one step later in list.
     def laterInList(self, taskTyp):
