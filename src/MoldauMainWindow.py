@@ -29,6 +29,7 @@ from MoldauConf import MoldauConf
 from TasksSettings import TasksSettings
 from TaskView import TaskView
 from TaskTyp import TaskTyp
+from Director import Director
 
 ## @file TaskTyp.py
 # @author Olaf Radicke<briefkasten@olaf-radicke.de>
@@ -41,6 +42,9 @@ class MoldauMainWindow(QtGui.QMainWindow):
     moldauConf   = MoldauConf()
     ## The setings  of taskts.
     tasksSettings = TasksSettings(moldauConf.getTasksSettingsFile())
+
+    ## Class controling the task runnings.
+    director = Director(tasksSettings)
 
     ## Simple List
     listview = ""
@@ -82,6 +86,17 @@ class MoldauMainWindow(QtGui.QMainWindow):
         menuFile.addAction(menuTasksSetting)
         menuFile.addAction(menuExit)
 
+
+        ## Menue-item for change the task stetting file.
+        menuInfoAbout = QtGui.QAction( 'About', self)
+        menuInfoAbout.setShortcut('Ctrl+I')
+        menuInfoAbout.setStatusTip('About this programm.')
+        self.connect(menuInfoAbout, QtCore.SIGNAL('triggered()'), QtCore.SLOT('about()'))
+
+
+        menuFile = menubar.addMenu('&Info')
+        menuFile.addAction(menuInfoAbout)
+
         # ------------- menu end ------------
 
         # ----------- toolbar ---------------------
@@ -108,8 +123,8 @@ class MoldauMainWindow(QtGui.QMainWindow):
         self.toolbar.addAction(toolUp)
 
         toolRun = QtGui.QAction(QtGui.QIcon('icons/run.png'), 'Run task list', self)
-#        toolNew.setShortcut('Ctrl+R')
-#       self.connect(toolNew, QtCore.SIGNAL('triggered()'), QtCore.SLOT('close()'))
+        toolNew.setShortcut('Ctrl+G')
+        self.connect(toolRun, QtCore.SIGNAL('triggered()'), QtCore.SLOT('directorRun()'))
         self.toolbar.addAction(toolRun)
 
         # ----------- toolbar end ------------------------
@@ -325,7 +340,28 @@ class MoldauMainWindow(QtGui.QMainWindow):
               index = self.listview.row(foundItems[0])
               self.listview.setCurrentRow(index, QtGui.QItemSelectionModel.ToggleCurrent)
         
-
+    ## Function / slot is start the task executing,
+    @pyqtSlot()
+    def directorRun(self):
+        print "[debug] directorRun"
+        todo = ""
+        for item in self.listview.selectedItems():
+            print  ".." , item.text()
+            todo = item.text()
+        self.director.gotoTodo(todo)
+        
+    ## Open about-dialog
+    @pyqtSlot()
+    def about(self):
+        pass
+        #msgBox = QtGui.QMssageBox(self)
+        #msgBox.setText("About");
+        #msgBox.setInformativeText("Contact: Olaf Radicke <briefkasten@olaf-radicke.de>");
+        #msgBox.setStandardButtons(QMessageBox.Ok);
+        
+        #msgBox.setDefaultButton(QMessageBox::Save);
+        #int ret = msgBox.exec();
+      
     ## Only a fake-output, as exsample. 
     def __minutesExsample(self):
 

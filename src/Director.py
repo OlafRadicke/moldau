@@ -25,11 +25,11 @@ import ConfigParser
 import sys
 import os
 
-## @file zdirector.py
+## @file Director.py
 # @author Olaf Radicke<radicke@atix.de>
 
 ## Die Klasse führt die Regie bei der Arbeit.
-class ZDirector:
+class Director:
 
     ## constructor set a instac of a ZSettings class
     def __init__(self, settings):
