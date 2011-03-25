@@ -24,6 +24,7 @@
 import ConfigParser
 import sys
 import os
+import TaskLogItem
 
 ## @file Director.py
 # @author Olaf Radicke<radicke@atix.de>
@@ -69,7 +70,9 @@ class Director:
     ## Schaut sich an was zu tun ist und verteilt die Aufgaben an andere
     # Methoden weiter.
     def jobCenter(self, todo):
-
+        # Item for Logging
+        taskLogItem = TaskLogItem.TaskLogItem()
+        taskLogItem.step_type = self.progSettings.getTodoTyp(todo)
         if self.progSettings.getTodoTyp(todo) == "bash_command":
             self.bashCommand(todo)
         elif self.progSettings.getTodoTyp(todo) == "replacement":
