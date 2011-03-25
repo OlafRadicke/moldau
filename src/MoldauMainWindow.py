@@ -361,6 +361,13 @@ class MoldauMainWindow(QtGui.QMainWindow):
         
         #msgBox.setDefaultButton(QMessageBox::Save);
         #int ret = msgBox.exec();
+
+        infotext = "Arbeitstitel: Moldau \n"
+        infotext = infotext + "Lizenz: GPL \n"
+        infotext = infotext + "Contact: Olaf Radicke <briefkasten@olaf-radicke.de>"
+
+        QtGui.QMessageBox.information(self, "About",infotext)
+
       
     ## Only a fake-output, as exsample. 
     def __minutesExsample(self):
