@@ -30,6 +30,8 @@ from TasksSettings import TasksSettings
 from TaskView import TaskView
 from TaskTyp import TaskTyp
 from Director import Director
+import TaskLogItem
+import  array
 
 ## @file TaskTyp.py
 # @author Olaf Radicke<briefkasten@olaf-radicke.de>
@@ -46,14 +48,18 @@ class MoldauMainWindow(QtGui.QMainWindow):
     ## Class controling the task runnings.
     director = Director(tasksSettings)
 
+    ## A list of TaskLogItem objects. For generiting minutes.
+    taskLogList =  [] #director.logList
+
     ## Simple List
     listview = ""
 
     ## TaskView: This class show the taskt data.
     taskBox = ""
 
-    ## Minutes of the proceedings
-    minutes = ""
+    ## Minutes of the proceedings as html
+    minutes =  ""
+
 
     ## This QTextBrowser show the minutes of the proceedings
     textView = ""
@@ -61,6 +67,7 @@ class MoldauMainWindow(QtGui.QMainWindow):
     ## Constructor
     def __init__(self, *args): 
         QtGui.QMainWindow.__init__(self, *args)
+
 
         self.resize(800,680)
         self.setWindowTitle('Moldau')
@@ -206,8 +213,6 @@ class MoldauMainWindow(QtGui.QMainWindow):
         # Item-List
         self.refreshTaskList()
 
-        ## @todo Only for demo!
-        self.__minutesExsample()
 
     ## A function with qt-slot. it's creade a new task.
     @pyqtSlot()
@@ -347,8 +352,12 @@ class MoldauMainWindow(QtGui.QMainWindow):
         todo = ""
         for item in self.listview.selectedItems():
             print  ".." , item.text()
-            todo = item.text()
+            todo = str(item.text())
         self.director.gotoTodo(todo)
+        
+        print "[debug] self.director.logList I " , self.director.logList
+        self.taskLogList = self.taskLogList + self.director.logList
+        self.refreshMinutes()
         
     ## Open about-dialog
     @pyqtSlot()
@@ -368,39 +377,43 @@ class MoldauMainWindow(QtGui.QMainWindow):
 
         QtGui.QMessageBox.information(self, "About",infotext)
 
+    ## Refresh minutes view.
+    def refreshMinutes(self):
+        html_minutes = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"\
+        \"http://www.w3.org/TR/html4/loose.dtd\">"
+        html_minutes = html_minutes + "<html>\r <head>\r <title>Minutes</title>\r \
+        </head>\r <body>\r"
+        html_minutes = html_minutes + "<table border=\"1\">"
+        html_minutes = html_minutes + "  <tr>"
+        html_minutes = html_minutes + "    <th><b>Timestamp</b></th>"
+        html_minutes = html_minutes +  "    <th><b>Task-Name</b></th>"
+        html_minutes = html_minutes +  "    <th><b>Task-Typ</b></th>"
+        html_minutes = html_minutes +  "    <th><b>Task-Do</b></th>"
+        html_minutes = html_minutes +  "    <th><b>Task-Result</b></th>"
+        html_minutes = html_minutes +  "    <th><b>Task-Note</b></th>"
+        html_minutes = html_minutes +  "  </tr>"
+
+        print "[debug] taskLogList: " , self.taskLogList
+#        print "[debug] taskLogList.count(): " , self.taskLogList.count()
+        for item in self.taskLogList:
+            print "[debug] Item : ", item
+            try:
+                zeile = "  <tr>"
+                zeile = zeile + "    <th>" + item.timestamp + "</th>"
+                zeile = zeile + "    <th>" + item.step_id + "</th>"
+                zeile = zeile + "    <th>" + item.step_type + "</th>"
+                zeile = zeile + "    <th>" + item.done + "</th>"
+                zeile = zeile + "    <th>" + item.result + "</th>"
+                zeile = zeile + "    <th>" + item.logNote + "</th>"
+                zeile = zeile + "  </tr>"
+                html_minutes = html_minutes +  zeile
+            except:
+                print "[debug] error..."
+
+        html_minutes = html_minutes + "</table>"
+        html_minutes = html_minutes + "</body>\r </html>"
+
+        self.textView.setHtml(html_minutes)
+
       
-    ## Only a fake-output, as exsample. 
-    def __minutesExsample(self):
 
-        textExample =  "<table border=\"1\">"
-        textExample = textExample +  "  <tr>"
-        textExample = textExample +  "    <th><b>Timestamp</b></th>"
-        textExample = textExample +  "    <th><b>Task-Name</b></th>"
-        textExample = textExample +  "    <th><b>Task-Typ</b></th>"
-        textExample = textExample +  "    <th><b>Task-Do</b></th>"
-        textExample = textExample +  "    <th><b>Task-Result</b></th>"
-        textExample = textExample +  "  </tr>"
-        textExample = textExample +  "  <tr>"
-        textExample = textExample +  "    <td>2011-03-20-21:43</td>"
-        textExample = textExample +  "    <td>Task_01</td>"
-        textExample = textExample +  "    <td>bash_command</td>"
-        textExample = textExample +  "    <td>mkdir ./test-dir</td>"
-        textExample = textExample +  "    <td>okay</td>"
-        textExample = textExample +  "  </tr>"
-        textExample = textExample +  "  <tr>"
-        textExample = textExample +  "    <td>2011-03-20-21:44</td>"
-        textExample = textExample +  "    <td>Task_02</td>"
-        textExample = textExample +  "    <td>bash_command</td>"
-        textExample = textExample +  "    <td>rm ./testdata-2.txt</td>"
-        textExample = textExample +  "    <td>rm: cannot remove `./testdata-2.txt': No such file or directory</td>"
-        textExample = textExample +  "  </tr>"
-        textExample = textExample +  "  <tr>"
-        textExample = textExample +  "    <td>2011-03-20-21:46</td>"
-        textExample = textExample +  "    <td>Task_03</td>"
-        textExample = textExample +  "    <td>bash_command</td>"
-        textExample = textExample +  "    <td>cd ./testdata-2.txt</td>"
-        textExample = textExample +  "    <td>bash: cd: ./testdata-2.txt: No such file or directory</td>"
-        textExample = textExample +  "  </tr>"
-        self.minutes = textExample +  "</table>"
-
-        self.textView.setHtml(self.minutes)      

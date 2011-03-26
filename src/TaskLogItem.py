@@ -44,4 +44,11 @@ class TaskLogItem:
     result = ""
 
     logNote = ""
-    
+    def __init__(self):
+        self.step_id = ""
+        self.timestamp = ""
+        self.step_type = ""
+        self.done = ""
+        self.result = ""
+        self.logNote = ""
+      
