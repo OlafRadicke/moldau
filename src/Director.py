@@ -35,6 +35,8 @@ class Director:
 
     logList = []
 
+    lastExecuteTaktID = ""
+
     ## constructor set a instac of a ZSettings class
     def __init__(self, settings):
         self.progSettings = settings
@@ -52,22 +54,38 @@ class Director:
 
     ## jump to decided point
     def gotoTodo(self, todoJump):
-        print("continu with todo '" + todoJump + "'....")
+        #print("continu with todo '" + todoJump + "'....")
         ignoreTodo = True
         result = True
 
         todoList = self.progSettings.getStoryboard()
-        print "[debug] todoList: " , todoList
+        #print "[debug] todoList: " , todoList
 
-        print "[debug] todoList -II: " , todoList
+
         for todo in todoList:
+          
+            # is this the jump in point...
             if todoJump == todo:
-                print "[debug] ...if todoJump == todo"
+                #print "[debug] ...if todoJump == todo"
                 ignoreTodo = False
-                result = self.jobCenter(todo)
+                # get the todo object
+                taskTyp = self.progSettings.getTaskTyp(todo)
+                result = self.jobCenter(taskTyp)
+                if(taskTyp.StopAfter == "True"):
+                    self.lastExecuteTaktID = taskTyp.ID
+                    return
+            # is this todo after jump in point, go...
             elif ignoreTodo == False:
-                print "[debug] ...elif ignoreTodo == False"
-                result = self.jobCenter(todo)
+                #print "[debug] ...elif ignoreTodo == False"
+                # get the todo object
+                taskTyp = self.progSettings.getTaskTyp(todo)
+                self.lastExecuteTaktID = taskTyp.ID
+                if(taskTyp.StopBefore == "True"):
+                    return
+                result = self.jobCenter(taskTyp)
+                if(taskTyp.StopAfter == "True"):
+                    return
+            # it's not jump in poinz oder later. So ignore...
             else:
                 print("ignore todo: " + todo)
             if (result == False):
@@ -79,17 +97,19 @@ class Director:
     ## Schaut sich an was zu tun ist und verteilt die Aufgaben an andere
     # Methoden weiter.
     # @return True if successful.
-    def jobCenter(self, todo):
+    def jobCenter(self, taskTyp):
         # Item for Logging
         taskLogItem = TaskLogItem.TaskLogItem()
+        
         taskLogItem.timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
-        print "[debug] direktor -> todo: " , todo
-        taskLogItem.step_id = todo
-        taskLogItem.step_type = self.progSettings.getTodoTyp(todo)
-        if self.progSettings.getTodoTyp(todo) == "bash_command":
-            result = self.bashCommand(todo, taskLogItem)
-        elif self.progSettings.getTodoTyp(todo) == "replacement":
-            result = self.replacement(todo, taskLogItem)
+        #print "[debug] direktor -> todo: " , taskTyp.ID
+        taskLogItem.step_id = taskTyp.ID
+        taskLogItem.step_type = taskTyp.TodoTyp
+
+        if taskLogItem.step_type == "bash_command":
+            result = self.bashCommand(taskTyp, taskLogItem)
+        elif taskLogItem.step_type == "replacement":
+            result = self.replacement(taskTyp, taskLogItem)
         else:
             print("Unbekanter 'stap_typ' in '" + self.progSettings.configFile  + "'.")
             taskLogItem.logNote = "Unbekanter 'stap_typ' in '" + self.progSettings.configFile  + "'."
@@ -99,11 +119,10 @@ class Director:
 
     ## Führt bashkomandos aus
     # @return True if successful.
-    def bashCommand(self, todo, taskLogItem):
-        command =  self.progSettings.getTodoCommand(todo)
-        taskLogItem.done = command
-        print "bashCommand:", command
-        if os.system(command) == 0:
+    def bashCommand(self, taskTyp, taskLogItem):
+        taskLogItem.done = taskTyp.BashCommand
+        #print "bashCommand:", taskTyp.BashCommand
+        if os.system(taskTyp.BashCommand) == 0:
             print("...done.")
             taskLogItem.result = "...done."
             self.logList.append(taskLogItem)
@@ -115,13 +134,16 @@ class Director:
             return False
 
     ## ersetzt dateien
-    def replacement(self, todo, taskLogItem):
-        print("replacement:")
-        print "[debug] replacement I: ", taskLogItem
+    # @param taskTyp a TaskTyp Object represent info about a task.
+    # @param taskLogItem TaskLogItem Object info represent info about result of task run.
+    # @return True if successful.
+    def replacement(self, taskTyp, taskLogItem):
+        #print("replacement:")
+        #print "[debug] replacement I: ", taskLogItem
         try:
-            oldFileName =  self.progSettings.getOldFile(todo)
+            oldFileName =  taskTyp.OldFile
             print("change file: " + oldFileName )
-            newFileName =  self.progSettings.getNewFile(todo)
+            newFileName =  taskTyp.NewFile
             print("with file: " + newFileName )
             taskLogItem.done = "replacement: " + oldFileName + " < " + newFileName
             oldFile = open(oldFileName,'w')
@@ -137,7 +159,7 @@ class Director:
             print "copy process is failed:", sys.exc_info()[0]
             taskLogItem.result = "copy process is failed:", sys.exc_info()[0]
             self.logList.append(taskLogItem)
-            print "[debug] replacement II: ", taskLogItem
+            #print "[debug] replacement II: ", taskLogItem
             return False
 
         print("....done.")

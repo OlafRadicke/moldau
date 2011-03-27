@@ -21,7 +21,7 @@
  #                                                                         #
  ###########################################################################
 
-## @file TaskTyp.py
+## @file TaskLogItem.py
 # @author Olaf Radicke<briefkasten@olaf-radicke.de>
 
 

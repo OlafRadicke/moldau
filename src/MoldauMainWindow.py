@@ -355,9 +355,16 @@ class MoldauMainWindow(QtGui.QMainWindow):
             todo = str(item.text())
         self.director.gotoTodo(todo)
         
-        print "[debug] self.director.logList I " , self.director.logList
+        #print "[debug] self.director.logList I " , self.director.logList
         self.taskLogList = self.taskLogList + self.director.logList
         self.refreshMinutes()
+        
+        # set select focus
+        foundItems = self.listview.findItems(self.director.lastExecuteTaktID, QtCore.Qt.MatchExactly)
+        if foundItems > 0:
+            index = self.listview.row(foundItems[0])
+            self.listview.setCurrentRow(index, QtGui.QItemSelectionModel.ToggleCurrent)
+
         
     ## Open about-dialog
     @pyqtSlot()
