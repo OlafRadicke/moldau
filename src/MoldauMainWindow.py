@@ -42,6 +42,7 @@ class MoldauMainWindow(QtGui.QMainWindow):
 
     ## configuraton of this applikation.
     moldauConf   = MoldauConf()
+    
     ## The setings  of taskts.
     tasksSettings = TasksSettings(moldauConf.getTasksSettingsFile())
 
@@ -171,6 +172,7 @@ class MoldauMainWindow(QtGui.QMainWindow):
         self.connect(clearPushButton, QtCore.SIGNAL('pressed()'), QtCore.SLOT('clearMinutes()'))
         hLayoutButtonBar.addWidget(clearPushButton)
         savePushButton = QtGui.QPushButton("Save minutes as...")
+        self.connect(savePushButton, QtCore.SIGNAL('pressed()'), QtCore.SLOT('savingMinutes()'))
         hLayoutButtonBar.addWidget(savePushButton)
 
 
@@ -237,7 +239,7 @@ class MoldauMainWindow(QtGui.QMainWindow):
         self.statusBar().showMessage(str("try open task setting file: " + filename))
         self.moldauConf.setTasksSettingsFile(str(filename))
         self.tasksSettings.setConfFile(str(filename))
-        print "[debug] tasksSettings.configFile" , self.tasksSettings.configFile  
+        #print "[debug] tasksSettings.configFile" , self.tasksSettings.configFile  
         self.listview.clear ()
         # refill item-List
         count = 0
@@ -279,6 +281,7 @@ class MoldauMainWindow(QtGui.QMainWindow):
         print "[debug] clearMinutes..."
         self.minutes = ""
         self.textView.setHtml(self.minutes)
+        self.director.logList = []
 
     ## Function delete a task
     @pyqtSlot()
@@ -350,13 +353,23 @@ class MoldauMainWindow(QtGui.QMainWindow):
     def directorRun(self):
         print "[debug] directorRun"
         todo = ""
+        #selectedKasktItems = self.listview.selectedItems()
+        #itemCount = selectedKasktItems.count(QtGui.QListWidgetItem)
+        #print "self.listview.selectedItems().count(): ",itemCount
+
         for item in self.listview.selectedItems():
             print  ".." , item.text()
             todo = str(item.text())
+        print "todo: ", todo
+        if (todo == ""):
+            QtGui.QMessageBox.warning(self, "Abort!","No task selct in list!")
+            return
+            
         self.director.gotoTodo(todo)
         
         #print "[debug] self.director.logList I " , self.director.logList
-        self.taskLogList = self.taskLogList + self.director.logList
+#        self.taskLogList = self.taskLogList + self.director.logList
+        self.taskLogList = self.director.logList
         self.refreshMinutes()
         
         # set select focus
@@ -424,3 +437,10 @@ class MoldauMainWindow(QtGui.QMainWindow):
 
       
 
+    ## Open about-dialog
+    @pyqtSlot()
+    def savingMinutes(self):
+        print "savingMinutes()"
+        filename = QtGui.QFileDialog.getSaveFileName(self, "Saving minutes", "task_minuts.html","*.html*")
+        minuteFile = open(filename, 'w')
+        minuteFile.write(str(self.textView.toHtml()))

@@ -63,23 +63,28 @@ class Director:
 
 
         for todo in todoList:
-          
+            print "todo: ", todo
             # is this the jump in point...
             if todoJump == todo:
-                #print "[debug] ...if todoJump == todo"
+                print "[debug] ...if todoJump == todo"
                 ignoreTodo = False
                 # get the todo object
                 taskTyp = self.progSettings.getTaskTyp(todo)
+                self.lastExecuteTaktID = taskTyp.ID
+                print "taskTyp.SkipStap: ", taskTyp.SkipStap
+                if(taskTyp.SkipStap  == "True"):
+                    continue
                 result = self.jobCenter(taskTyp)
                 if(taskTyp.StopAfter == "True"):
-                    self.lastExecuteTaktID = taskTyp.ID
                     return
             # is this todo after jump in point, go...
             elif ignoreTodo == False:
-                #print "[debug] ...elif ignoreTodo == False"
+                print "[debug] ...elif ignoreTodo == False"
                 # get the todo object
                 taskTyp = self.progSettings.getTaskTyp(todo)
                 self.lastExecuteTaktID = taskTyp.ID
+                if(taskTyp.SkipStap  == "True"):
+                    continue
                 if(taskTyp.StopBefore == "True"):
                     return
                 result = self.jobCenter(taskTyp)

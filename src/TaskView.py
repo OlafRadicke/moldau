@@ -147,6 +147,7 @@ class TaskView(QtGui.QGroupBox):
         self.originalFileLineEdit = QtGui.QLineEdit()
         hLayoutOriginalFile.addWidget(self.originalFileLineEdit)
         originalFilePushButton = QtGui.QPushButton("...")
+        self.connect(originalFilePushButton, QtCore.SIGNAL('clicked()'), QtCore.SLOT('selectOriginalFile()'))
         hLayoutOriginalFile.addWidget(originalFilePushButton)
 
 
@@ -158,6 +159,7 @@ class TaskView(QtGui.QGroupBox):
         self.replacementFileLineEdit = QtGui.QLineEdit()
         hLayoutReplacementFile.addWidget(self.replacementFileLineEdit)
         replacementFilePushButton = QtGui.QPushButton("...")
+        self.connect(replacementFilePushButton, QtCore.SIGNAL('clicked()'), QtCore.SLOT('selectReplacementFile()'))
         hLayoutReplacementFile.addWidget(replacementFilePushButton)
         
 
@@ -278,5 +280,19 @@ class TaskView(QtGui.QGroupBox):
     @pyqtSlot()
     def resetTaskChanges(self):
         self.setTaskTyp(self.task)
+
+
+    ## Slot wis file dialog, for selct original file.
+    @pyqtSlot()
+    def selectOriginalFile(self):
+        #print "selectOriginalFile()"
+        filename = QtGui.QFileDialog.getOpenFileName(self, "Select original file", self.originalFileLineEdit.text(),"*.*")
+        self.originalFileLineEdit.setText(filename)
            
-          
+
+    ## Slot with file dialog, for selct original file.
+    @pyqtSlot()
+    def selectReplacementFile(self):
+        print "selectReplacementFile()"
+        filename = QtGui.QFileDialog.getOpenFileName(self, "File for replacement", self.replacementFileLineEdit.text(),"*.*")
+        self.replacementFileLineEdit.setText(filename)
