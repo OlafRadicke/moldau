@@ -382,15 +382,6 @@ class MoldauMainWindow(QtGui.QMainWindow):
     ## Open about-dialog
     @pyqtSlot()
     def about(self):
-        pass
-        #msgBox = QtGui.QMssageBox(self)
-        #msgBox.setText("About");
-        #msgBox.setInformativeText("Contact: Olaf Radicke <briefkasten@olaf-radicke.de>");
-        #msgBox.setStandardButtons(QMessageBox.Ok);
-        
-        #msgBox.setDefaultButton(QMessageBox::Save);
-        #int ret = msgBox.exec();
-
         infotext = "Arbeitstitel: Moldau \n"
         infotext = infotext + "Lizenz: GPL \n"
         infotext = infotext + "Contact: Olaf Radicke <briefkasten@olaf-radicke.de>"
