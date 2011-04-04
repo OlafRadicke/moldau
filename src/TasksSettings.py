@@ -175,7 +175,7 @@ class TasksSettings:
     # @return return the file name which we would like remove.
     def getOldFile(self, todo):
         try:
-            conf_value  = self.config.get(str(todo), "old_file")
+            conf_value  = self.config.get( str(todo), "old_file", fallback='')
         except:
             print "[OR20110320_2021_03]"
             conf_value  = ""
